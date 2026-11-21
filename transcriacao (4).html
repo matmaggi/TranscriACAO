@@ -1,0 +1,1012 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TranscriAÇÃO – Transcreva áudio ou vídeo em legendas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20fill%3D%22%231f6f5c%22%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2216%22%2F%3E%3Crect%20fill%3D%22%23ffffff%22%20x%3D%2226%22%20y%3D%228%22%20width%3D%2212%22%20height%3D%2223%22%20rx%3D%226%22%2F%3E%3Cpath%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-linecap%3D%22round%22%20d%3D%22M19.5%2026a12.5%2012.5%200%200%200%2025%200M32%2038.5V43%22%20stroke-width%3D%223.5%22%2F%3E%3Crect%20fill%3D%22%23ffffff%22%20x%3D%2212%22%20y%3D%2248%22%20width%3D%2240%22%20height%3D%225%22%20rx%3D%222.5%22%2F%3E%3Crect%20fill%3D%22%23ffffff%22%20x%3D%2220%22%20y%3D%2256%22%20width%3D%2224%22%20height%3D%224%22%20rx%3D%222%22%2F%3E%3C%2Fsvg%3E">
+<style>
+:root{--bg:#eef1ef;--card:#ffffff;--tx:#1b2420;--mut:#5f6d66;--bd:#d8dfdb;--ac:#1f6f5c;--acb:#e3f1ec;--onac:#ffffff;--err:#b42318;--t1:#e6f4ee;--t2:#fdf1dc;--t3:#e7edfc;--t4:#fbe9f1;--ok:#157347;--warn:#a15c07;--fg:var(--tx);--acf:var(--onac);--bad:var(--err);--now:var(--t1);--green:#2f9e78;--amber:#f59f00;--blue:#4c6ef5;--pink:#e64980;--disp:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;--sys:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121714;--card:#1b221e;--tx:#e6ece8;--mut:#9aa8a0;--bd:#2d3832;--ac:#5fc4a8;--acb:#1f3a31;--onac:#0e1a15;--err:#ff8b7e;--t1:#18291f;--t2:#2b2515;--t3:#1a2236;--t4:#2b1c25;--ok:#4ade80;--warn:#fbbf24;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121714;--card:#1b221e;--tx:#e6ece8;--mut:#9aa8a0;--bd:#2d3832;--ac:#5fc4a8;--acb:#1f3a31;--onac:#0e1a15;--err:#ff8b7e;--t1:#18291f;--t2:#2b2515;--t3:#1a2236;--t4:#2b1c25;--ok:#4ade80;--warn:#fbbf24;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 var(--sys);border-top:5px solid;border-image:linear-gradient(90deg,#2f9e78,#f59f00,#4c6ef5,#e64980) 1}
+header.fh,main,footer.ft{max-width:1050px;margin-left:auto;margin-right:auto;padding-left:20px;padding-right:20px}
+main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr) minmax(0,1fr);gap:18px;padding-top:6px;padding-bottom:12px;align-items:stretch}
+main>.card{margin:0;display:flex;flex-direction:column}
+main>.full{grid-column:1/-1}
+.card .grow{flex:1}
+@media(max-width:980px){main{grid-template-columns:1fr}}
+.tip{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;background:var(--ac);color:var(--acf);font:700 11px/1 var(--sys);cursor:help;margin-left:5px;vertical-align:1px;user-select:none}
+#tipbox{text-align:justify;hyphens:none;position:fixed;z-index:50;max-width:300px;background:var(--fg);color:var(--bg);font-size:12.5px;line-height:1.45;padding:8px 11px;border-radius:7px;pointer-events:none;opacity:0;transition:opacity .12s;white-space:pre-line;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+#tipbox.on{opacity:1}
+.card{background:var(--card);border:1px solid var(--bd);border-top:4px solid var(--green);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+main>.card:nth-of-type(1){background:var(--t1);border-top-color:var(--green)}
+main>.card:nth-of-type(2){background:var(--t2);border-top-color:var(--amber)}
+main>.card:nth-of-type(3){background:var(--t4);border-top-color:var(--pink)}
+main>.card.full{background:var(--t3);border-top-color:var(--blue)}
+.card h2{margin:0 0 10px;font:700 1.05rem/1.25 var(--disp)}
+label{display:block;font-size:13px;color:var(--mut);margin:8px 0 3px}
+input,select,textarea,button{font:inherit;color:var(--fg)}
+input,select,textarea{width:100%;background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:6px 8px}
+:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.g2 label{white-space:nowrap}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+button{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:6px 11px;cursor:pointer}
+button:hover{border-color:var(--ac)}
+button.pri{background:var(--ac);color:var(--acf);border-color:var(--ac);font-weight:600;padding:9px 14px;width:100%;margin-top:12px}
+button:disabled{opacity:.5;cursor:wait}
+.hint{font-size:12.5px;color:var(--mut);margin:6px 0 0}
+#bar{width:100%;height:6px;accent-color:var(--ac);margin-top:10px;display:none}
+#st{font-size:13px;margin-top:6px;min-height:18px}
+#st.err{color:var(--bad)}
+audio{width:100%}
+.bar{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.bar .sp{flex:1}.bar .tip{align-self:center}
+.cue{display:grid;grid-template-columns:30px 122px minmax(0,1fr) 150px;grid-template-areas:'n tt txt btns' '. . meta btns';justify-content:center;gap:6px 14px;padding:12px 0;border-top:1px solid var(--bd);align-items:start}
+.cue.now{background:var(--now);margin:0 -16px;padding:10px 16px}
+.cue .n{grid-area:n;color:var(--mut);font-size:13px;padding-top:7px;text-align:right}
+.cue .tt{grid-area:tt}
+.cue .tt input{background:var(--card);font-variant-numeric:tabular-nums;margin-bottom:4px;padding:4px 6px;font-size:13px}
+.cue textarea{text-align:center;background:var(--card);grid-area:txt;resize:vertical;min-height:54px;line-height:1.35;font-size:16px}
+.cue .meta{grid-area:meta;justify-content:center;font-size:12.5px;display:flex;flex-wrap:wrap;gap:4px 12px;color:var(--mut)}
+.cue .meta .bad{color:var(--bad);font-weight:600}.cue .meta .ok{color:var(--ok)}
+.cue .btns{grid-area:btns;display:grid;grid-template-columns:1fr 1fr;gap:5px;align-content:start}
+.cue .btns button{padding:5px 6px;font-size:12.5px;background:var(--blue);border-color:var(--blue);color:#fff}
+.cue .btns button:hover{filter:brightness(1.1)}
+.bar button{background:var(--ac);border-color:var(--ac);color:var(--acf)}
+.bar button:hover{filter:brightness(1.1)}
+@media(max-width:860px){.cue{grid-template-columns:30px 1fr;grid-template-areas:'n tt' 'txt txt' 'meta meta' 'btns btns';justify-content:stretch}.cue .btns{grid-template-columns:repeat(4,1fr)}}
+#cost{font-size:13px;margin-top:8px;color:var(--fg)}
+.chk{display:flex;align-items:center;gap:5px;font-size:12px;white-space:nowrap;color:var(--mut);margin-top:6px}.chk input{width:auto;margin:0}
+.empty{color:var(--mut);padding:26px 0;text-align:center;font-size:12.5px;white-space:nowrap}
+@media(max-width:900px){.empty{white-space:normal}}
+#sum{font:700 16px/1.3 var(--disp);color:var(--tx);text-align:center;margin:4px 0 8px}
+#sum .w{color:var(--err)}#sum .k{color:var(--ok)}
+[hidden]{display:none!important}
+main>.card:not(.full) .tip{float:right;margin-top:2px}
+main>.card:not(.full) .chk .tip{float:none;margin:0 0 0 auto}
+.filepick{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-width:0;border:2px dashed var(--ac);border-radius:10px;padding:12px 10px;background:color-mix(in srgb,var(--green) 20%,var(--card));text-align:center;transition:border-color .15s,background .15s;cursor:pointer}
+.filepick.over{background:color-mix(in srgb,var(--green) 42%,var(--card))}
+.filepick button{padding:3px 12px;font-size:13.5px}
+.filepick .dz{font-size:13px;color:var(--mut)}
+.filepick .ic{font-size:26px;line-height:1;color:var(--ac)}
+.just{text-align:justify}
+#finfo.loaded{font-weight:700;text-align:center;color:var(--tx);overflow-wrap:anywhere}
+.filepick span{font-size:13px;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+#ctx{font-size:12px;line-height:1.35}
+.pl{position:sticky;top:0;z-index:5;background:var(--t3);padding:8px 0 4px;margin-top:-8px}
+.cue{scroll-margin-top:80px}
+/* ===== identidade da família ===== */
+.fh{text-align:center;padding-top:26px;padding-bottom:18px}
+.fh .brand{display:flex;align-items:center;justify-content:center;gap:12px;margin:0 0 6px}
+.fh .brand svg{width:clamp(40px,8vw,48px);height:auto;flex:none}
+.fh h1{margin:0;font:800 clamp(1.75rem,4.6vw,2.2rem)/1.05 var(--disp);letter-spacing:-.03em;color:var(--tx)}
+.fh .sub{margin:0 auto;max-width:none;white-space:nowrap;color:var(--mut);font-size:1rem;line-height:1.45}
+@media (max-width:900px){.fh .sub{white-space:normal}}
+.logo-bg{fill:var(--ac)}.logo-fg{fill:var(--onac)}
+.logo-st{fill:none;stroke:var(--onac);stroke-linecap:round;stroke-linejoin:round}
+footer.ft{text-align:center;color:var(--mut);font-size:.9rem;line-height:1.5;padding-top:28px;padding-bottom:32px}
+footer.ft p{margin:0}
+footer.ft a{color:var(--ac);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="fh">
+  <div class="brand"><svg viewBox="0 0 64 64" aria-hidden="true"><rect class="logo-bg" width="64" height="64" rx="16"/><rect class="logo-fg" x="26" y="8" width="12" height="23" rx="6"/><path class="logo-st" d="M19.5 26a12.5 12.5 0 0 0 25 0M32 38.5V43" stroke-width="3.5"/><rect class="logo-fg" x="12" y="48" width="40" height="5" rx="2.5"/><rect class="logo-fg" x="20" y="56" width="24" height="4" rx="2"/></svg><h1>TranscriAÇÃO</h1></div>
+  <p class="sub">Transcreva um áudio ou vídeo e crie legendas transcritas.</p>
+</header>
+<main>
+  <div class="card">
+    <h2>1. Arquivo</h2>
+    <div class="filepick" id="drop"><div class="dz">Arraste o arquivo para cá<br>ou</div><button type="button" id="fbtn">Escolher arquivo</button></div>
+    <input type="file" id="file" accept="audio/*,video/*" hidden>
+    <p class="hint" id="finfo">Aceita MP3, WAV, M4A, MP4, MKV e o que o navegador conseguir abrir.</p>
+    <p class="hint just">Se for um vídeo, só o áudio é usado. Vídeos muito grandes (acima de ~1 GB) podem precisar ser convertidos para áudio antes, exceto no ElevenLabs Scribe, que aceita o vídeo direto. <span class="tip" tabindex="0" data-tip="Como converter com o VLC (grátis, videolan.org):&#10;1. Menu Mídia → Converter/Salvar.&#10;2. Clique em Adicionar, escolha o vídeo e clique em Converter/Salvar.&#10;3. Em Perfil, escolha &quot;Audio - MP3&quot;.&#10;4. Em Arquivo de destino, clique em Procurar e dê um nome terminado em .mp3.&#10;5. Clique em Iniciar e carregue o MP3 aqui.&#10;&#10;Um episódio de 20 min vira cerca de 20 a 50 MB.">?</span></p>
+    <div class="grow"></div>
+    <label for="lang">Idioma do áudio <span class="tip" tabindex="0" data-tip="Escolher o idioma evita erros de detecção, principalmente quando o áudio começa com música, ruído ou silêncio.">?</span></label>
+    <select id="lang">
+      <option value="">Detectar automaticamente</option>
+      <option value="pt">Português</option><option value="en">Inglês</option><option value="es">Espanhol</option>
+      <option disabled>──────────</option>
+      <option value="de">Alemão</option><option value="ar">Árabe</option><option value="bg">Búlgaro</option><option value="ca">Catalão</option><option value="zh">Chinês</option><option value="ko">Coreano</option><option value="hr">Croata</option><option value="da">Dinamarquês</option><option value="sk">Eslovaco</option><option value="sl">Esloveno</option><option value="fi">Finlandês</option><option value="fr">Francês</option><option value="gl">Galego</option><option value="el">Grego</option><option value="he">Hebraico</option><option value="hi">Hindi</option><option value="nl">Holandês</option><option value="hu">Húngaro</option><option value="id">Indonésio</option><option value="is">Islandês</option><option value="it">Italiano</option><option value="ja">Japonês</option><option value="lv">Letão</option><option value="lt">Lituano</option><option value="ms">Malaio</option><option value="no">Norueguês</option><option value="fa">Persa</option><option value="pl">Polonês</option><option value="ro">Romeno</option><option value="ru">Russo</option><option value="sr">Sérvio</option><option value="sv">Sueco</option><option value="th">Tailandês</option><option value="cs">Tcheco</option><option value="tr">Turco</option><option value="uk">Ucraniano</option><option value="ur">Urdu</option><option value="vi">Vietnamita</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <h2>2. Regras de legenda</h2>
+    <div class="g2">
+      <div><label for="maxc">Caracteres por linha <span class="tip" tabindex="0" data-tip="Limite de cada linha. Padrão Netflix: 42.">?</span></label><input type="number" id="maxc" value="42" min="20" max="60"></div>
+      <div><label for="cps">Meta de caracteres/s <span class="tip" tabindex="0" data-tip="Velocidade de leitura desejada. Legendas mais rápidas que isso são unidas à vizinha quando possível. Nenhuma palavra é cortada ou resumida. Use 0 para desligar.">?</span></label><input type="number" id="cps" value="20" step="1" min="0"></div>
+      <div><label for="mind">Duração mínima (s) <span class="tip" tabindex="0" data-tip="Tempo mínimo na tela. Se a próxima fala começar antes disso, a legenda fica mais curta para não se sobrepor.">?</span></label><input type="number" id="mind" value="0.833" step="0.01"></div>
+      <div><label for="maxd">Duração máxima (s) <span class="tip" tabindex="0" data-tip="Tempo máximo na tela. Falas mais longas são divididas em mais de uma legenda.">?</span></label><input type="number" id="maxd" value="7" step="0.5"></div>
+      <div><label for="maxl">Linhas por legenda <span class="tip" tabindex="0" data-tip="1 ou 2. Padrão: 2.">?</span></label><input type="number" id="maxl" value="2" min="1" max="2"></div>
+      <div><label for="gap">Intervalo mínimo (s) <span class="tip" tabindex="0" data-tip="Espaço mínimo entre o fim de uma legenda e o início da próxima. 0,085 s equivale a cerca de 2 quadros.">?</span></label><input type="number" id="gap" value="0.085" min="0" step="0.005"></div>
+      <div><label for="pause">Quebrar em pausas (s) <span class="tip" tabindex="0" data-tip="Uma pausa na fala maior que este valor sempre começa uma nova legenda.">?</span></label><input type="number" id="pause" value="0.8" step="0.1"></div>
+      <div><label for="resp">Tempo extra (s) <span class="tip" tabindex="0" data-tip="Sempre que houver espaço, o fim da legenda é estendido até este tempo depois da fala. Use 0 para a legenda terminar junto com a fala.">?</span></label><input type="number" id="resp" value="0.5" step="0.1" min="0"></div>
+    </div>
+    <div class="grow"></div>
+    <p class="hint just">As quebras de linha evitam separar artigos, preposições e pronomes do que vem depois, e frases novas sempre começam no início de uma linha.</p>
+  </div>
+
+  <div class="card">
+    <h2>3. Transcrição</h2>
+    <label for="engine">Motor <span class="tip" tabindex="0" data-tip="ElevenLabs Scribe v3 (recomendado): o melhor texto nos testes, em português e inglês, com tempo por palavra. Identifica quem fala (vira o hífen de diálogo) e marca sons como risos. Precisa de uma chave da ElevenLabs.&#10;&#10;Groq, Whisper large-v3: texto no nível do whisper-1, por cerca de 1/3 do preço. Precisa de uma chave da Groq.&#10;&#10;OpenAI whisper-1: fiel ao que foi falado, com tempo por palavra. Será desligado pela OpenAI em fev/2027.&#10;&#10;OpenAI gpt-transcribe + whisper-1: acerta mais nomes e termos em narração e fala limpa, mas em conversas cruzadas pode trocar ou pular falas. Cobra as duas transcrições.&#10;&#10;Local (PC): grátis e o áudio não sai do computador, mas o texto e a sincronia são mais fracos. Bom para rascunho.">?</span></label>
+    <select id="engine">
+      <option value="scribe">ElevenLabs: Scribe v3 (recomendado)</option>
+      <option value="groq">Groq: Whisper large-v3</option>
+      <option value="openai">OpenAI: whisper-1</option>
+      <option value="gpt">OpenAI: gpt-transcribe + whisper-1</option>
+      <option value="local">Local (PC): Whisper large-v3</option>
+    </select>
+    <div id="localBox">
+      <label for="model">Modelo <span class="tip" tabindex="0" data-tip="Large-v3 Turbo: melhor texto, precisa de WebGPU. Marca o tempo por trecho, então a sincronia é aproximada.&#10;&#10;Small, Base e Tiny: marcam o tempo palavra a palavra, mas erram mais o texto. Quanto menor, mais rápido e menos preciso.&#10;&#10;O modelo é baixado só na primeira vez.">?</span></label>
+      <select id="model">
+        <option value="onnx-community/whisper-large-v3-turbo" data-word="0">Large-v3 Turbo – melhor texto (~800 MB)</option>
+        <option value="onnx-community/whisper-small_timestamped" data-word="1">Small – tempos por palavra (~250 MB)</option>
+        <option value="onnx-community/whisper-base_timestamped" data-word="1">Base – rápido (~100 MB)</option>
+        <option value="onnx-community/whisper-tiny_timestamped" data-word="1">Tiny – rascunho (~40 MB)</option>
+      </select>
+      <p class="hint" id="mrow">Pasta dos modelos: <b id="mdir">cache do navegador</b> <span class="tip" tabindex="0" data-tip="Guarda os modelos numa pasta do computador. Se o modelo já estiver lá, não baixa de novo, mesmo que o cache do navegador seja limpo.">?</span><br><button id="pickm">Escolher pasta…</button> <button id="resetm" hidden>Usar o cache</button></p>
+      <p class="hint" id="gpuinfo"></p>
+    </div>
+    <div id="cloudBox" hidden>
+      <label for="key"><span id="keyName">Chave da API OpenAI</span> <span class="tip" tabindex="0" id="keyTip" data-tip="">?</span></label>
+      <input type="password" id="key" placeholder="sk-..." autocomplete="off">
+      <label class="chk"><input type="checkbox" id="remember"> Lembrar a chave neste navegador <span class="tip" tabindex="0" data-tip="A chave fica guardada neste navegador e é preenchida sozinha na próxima vez. Só marque num computador que só você usa: quem abrir esta página nele poderá usar a sua chave. Desmarque para apagá-la.">?</span></label>
+      <label class="chk" id="evBox"><input type="checkbox" id="events" checked> Marcar sons (risos, aplausos…) <span class="tip" tabindex="0" data-tip="O Scribe coloca entre parênteses sons que não são fala, como (risos) ou (aplausos), igual à legenda oficial. Desmarque se não quiser.">?</span></label>
+      <div id="ctxBox">
+        <label for="ctx">Contexto (opcional) <span class="tip" tabindex="0" id="ctxTip" data-tip="Liste nomes de pessoas, lugares, marcas e termos técnicos com a grafia certa. O gpt-transcribe usa isso para escrever do jeito certo.&#10;&#10;Neste modo o texto vem do gpt-transcribe e os tempos vêm do whisper-1, alinhados palavra por palavra.">?</span></label>
+        <textarea id="ctx" rows="3" placeholder="Ex.: Entrevista sobre tecnologia. Nomes: Ana Ribeiro, Carlos Mendes. Termos: inteligência artificial, Nubank, ChatGPT."></textarea>
+      </div>
+    </div>
+    <div class="grow"></div>
+    <div id="cost"></div>
+    <button class="pri" id="go">Gerar legendas</button>
+    <progress id="bar" max="100" value="0"></progress>
+    <div id="st"></div>
+  </div>
+
+  <div class="card full">
+    <div class="pl"><audio id="player" controls></audio></div>
+    <div class="bar">
+      <button id="regen">Regerar do zero</button>
+      <button id="apply">Reaplicar regras ao texto atual</button>
+      <button id="undo">Desfazer</button>
+      <span class="tip" tabindex="0" data-tip="Regerar do zero: refaz tudo a partir da transcrição original. Suas edições são descartadas.&#10;&#10;Reaplicar regras: mantém o texto que você editou e refaz a divisão, as quebras de linha e os tempos com as regras atuais.&#10;&#10;Desfazer: volta ao estado anterior à última regeneração.">?</span>
+      <span class="sp"></span>
+      <span class="tip" tabindex="0" data-tip="SRT: o formato mais comum, aceito por quase todo player e editor.&#10;VTT: para web e YouTube.&#10;TTML: exigido por algumas plataformas de streaming.&#10;TXT: só o texto, sem tempos.">?</span>
+      <button data-x="srt">SRT</button><button data-x="vtt">VTT</button><button data-x="ttml">TTML</button><button data-x="txt">TXT</button>
+    </div>
+    <div id="sum"></div>
+    <div id="cues"><div class="empty">As legendas aparecem aqui depois da transcrição. Edite o texto e os tempos direto na lista; os avisos em vermelho mostram o que está fora das regras.</div></div>
+  </div>
+</main>
+<footer class="ft"><p>Veja mais ferramentas úteis para legendagem clicando <a href="https://matmaggi.github.io/subtools/">aqui</a>.</p></footer>
+<div id="tipbox" role="tooltip"></div>
+
+<script>
+const TJS = 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.5.1';
+function makeCache(dir) {   // cache de modelos numa pasta escolhida pelo usuário
+  const nm = r => encodeURIComponent(typeof r === 'string' ? r : r.url);
+  return {
+    async match(r) {
+      try {
+        const f = await (await dir.getFileHandle(nm(r))).getFile();
+        return new Response(f, {headers: {'Content-Length': String(f.size), 'Content-Type': /\.json$/.test(f.name) ? 'application/json' : 'application/octet-stream'}});
+      } catch (e) { return undefined; }
+    },
+    async put(r, res) {
+      try { const w = await (await dir.getFileHandle(nm(r), {create: true})).createWritable(); await w.write(await res.blob()); await w.close(); } catch (e) {}
+    }
+  };
+}
+async function transcribeParts(pipe, audio, parts, o, onPart) {   // cada parte (até 28 s) é transcrita sozinha, sem emendas
+  const out = [];
+  for (let i = 0; i < parts.length; i++) {
+    const a = parts[i][0], b = parts[i][1], sub = audio.subarray(a, b); onPart(i, parts.length);
+    let e = 0; for (let j = 0; j < sub.length; j += 16) e += sub[j] * sub[j];
+    if (Math.sqrt(e / Math.max(1, sub.length / 16)) < 0.002) continue;   // silêncio total: evita alucinação
+    const r = await pipe(sub, {return_timestamps: o.word ? 'word' : true, language: o.language || null, task: 'transcribe'});
+    const off = a / 16000;
+    for (const k of (r.chunks || [])) out.push({text: k.text, timestamp: [k.timestamp[0] == null ? null : k.timestamp[0] + off, k.timestamp[1] == null ? null : k.timestamp[1] + off]});
+  }
+  return out;
+}
+const W = `
+import { pipeline, env } from '${TJS}';
+${makeCache.toString()}
+${transcribeParts.toString()}
+let key, pipe;
+self.onmessage = async ({data}) => {
+  try {
+    const {model, device, dtype, audio, parts, dir} = data;
+    const k = model + device + (dir ? dir.name : '');
+    if (k !== key) {
+      env.useCustomCache = !!dir; env.useBrowserCache = !dir; if (dir) env.customCache = makeCache(dir);
+      pipe = await pipeline('automatic-speech-recognition', model, {device, dtype, progress_callback: p => self.postMessage({type:'progress', p})});
+      key = k;
+    }
+    const chunks = await transcribeParts(pipe, audio, parts, data, (i, n) => self.postMessage({type:'part', i, n}));
+    self.postMessage({type:'done', chunks});
+  } catch (e) { self.postMessage({type:'error', message: String((e && e.message) || e)}); }
+};`;
+
+const $ = id => document.getElementById(id);
+let file, words = [], cues = [], worker;
+const BAD = new Set('a an the of to in on at by for from with and or but nor so as if that than is are was be o os um uma uns umas de do da dos das em no na nos nas por para com e ou mas que se ao aos à às pelo pela el la los las un una y con del al'.split(' '));
+const cfg = () => ({maxc:+$('maxc').value, maxl:+$('maxl').value, mind:+$('mind').value, maxd:+$('maxd').value, gap:+$('gap').value, pause:+$('pause').value, resp:+$('resp').value, cps:+$('cps').value});
+const pad = (n, l = 2) => String(n).padStart(l, '0');
+const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+function ts(t, sep) { const ms = Math.round(Math.max(0, t) * 1000); return pad(Math.floor(ms / 36e5)) + ':' + pad(Math.floor(ms / 6e4) % 60) + ':' + pad(Math.floor(ms / 1e3) % 60) + sep + pad(ms % 1000, 3); }
+function parseT(s) { const p = s.trim().replace(',', '.').split(':').map(Number); return p.some(isNaN) ? NaN : p.reduce((a, v) => a * 60 + v, 0); }
+
+/* ---------- Quebra de linhas dentro do cue ---------- */
+const CONJ = new Set('and but or so because when while who whom whose which that where if then as although though since until unless whether e mas ou porque quando que quem onde se então como enquanto embora y pero cuando donde'.split(' '));
+const WEAK = new Set('i we they he she is are was were be been will would can could has have had do does did not eu nós ele ela não é são foi era'.split(' '));
+const PREP = new Set('for with in on at by from about into over under after before during through between without within off along across around toward towards like than para com em por sem sobre entre'.split(' '));
+const OBJ = new Set('them you it me him her us lhe lhes te'.split(' '));
+const LINK = new Set('of de do da dos das'.split(' '));
+const wk = s => s.toLowerCase().replace(/[^\p{L}']/gu, '');
+function bl(t, max) {   // melhor divisão em 2 linhas, ou null se nenhuma cabe
+  const w = t.split(' '); let best = null, bs = 1e9;
+  for (let i = 1; i < w.length; i++) {
+    const a = w.slice(0, i).join(' '), b = w.slice(i).join(' ');
+    if (a.length > max || b.length > max) continue;
+    let s = Math.abs(a.length - b.length) * .1;
+    if (a.length > b.length + 6) s += 2;                   // linha de cima bem maior (leve)
+    if (PREP.has(wk(w[i]))) s -= 3;                        // quebrar antes de preposição
+    if (OBJ.has(wk(w[i])) && !/[,;:.!?…]$/.test(w[i - 1])) s += 5; // não separar verbo do pronome objeto ("took | them")
+    const lw = wk(w[i - 1]);
+    if (BAD.has(lw)) s += 8; else if (WEAK.has(lw)) s += 3; // não terminar em artigo/preposição/pronome
+    if (/[,;:.!?…—–]$/.test(w[i - 1])) s -= 6;             // quebrar após pontuação
+    if (CONJ.has(wk(w[i]))) s -= 4; if (LINK.has(wk(w[i]))) s += 4;                        // quebrar antes de conjunção/relativo
+    if (i === 1 || i === w.length - 1) s += 5;             // evitar linha com uma palavra só
+    if (/^[-–]/.test(w[i])) s -= 10;                       // falas de diálogo
+    if (s < bs) { bs = s; best = a + '\n' + b; }
+  }
+  return best;
+}
+function breakLines(t, max, ml) {
+  t = t.replace(/\s*\n\s*/g, ' ').replace(/\s+/g, ' ').trim();
+  const turns = t.split(/\s(?=[-–—]\S)/);
+  if (turns.length === 1) t = t.replace(/^[-–—](?=\S)/, '');   // só um falante na legenda: sem hífen (padrão Netflix)
+  else if (ml >= 2 && turns.length === 2) {   // diálogo: cada fala numa linha, ambas com hífen sem espaço
+    const [a, b] = turns.map(x => '-' + x.trim().replace(/^[-–—]/, ''));
+    if (a.length <= max && b.length <= max) return a + '\n' + b;
+    t = turns.join(' ');
+  }
+  if (ml < 2 || t.length <= max) return t;
+  const r = bl(t, max); if (r) return r;
+  const m = t.length >> 1; let p = t.lastIndexOf(' ', m); if (p < 0) p = t.indexOf(' ');
+  return p < 0 ? t : t.slice(0, p) + '\n' + t.slice(p + 1);
+}
+
+/* ---------- Segmentação em cues (programação dinâmica) ---------- */
+const ABBR = /^(mr|mrs|ms|dr|prof|sr|sra|jr|st|vs)\.$/i;
+const DASH = /^[-–—]\S/;
+function endsSent(w, next) {
+  if (!/[.!?…]["”')\]]*$/.test(w.t) || ABBR.test(w.t) || /^[A-Za-z]\.$/.test(w.t)) return false;
+  if (next && /[^.]\.["”')\]]*$/.test(w.t) && /^\p{Ll}/u.test(next.t)) return false;   // "p.m. and"; reticências contam como fim
+  return true;
+}
+function fixDashes(ws) {   // "-" solto vira "-Palavra" (padrão de diálogo, sem espaço); "-" no fim some
+  const o = [];
+  for (let i = 0; i < ws.length; i++) {
+    if (/^[-–—]$/.test(ws[i].t)) { if (ws[i + 1]) ws[i + 1].t = '-' + ws[i + 1].t.replace(/^[-–—]\s*/, ''); continue; }
+    o.push(ws[i]);
+  }
+  return o;
+}
+function dedupe(ws) {      // remove trecho de 5+ palavras repetido em seguida (comum nas emendas de blocos do Whisper)
+  const k = w => w.t.toLowerCase().replace(/[^\p{L}\p{N}]/gu, ''); let removed = 0;
+  for (let i = 0; i < ws.length; i++) {
+    let hit = false;
+    for (let n = 12; n >= 5 && !hit; n--) for (let g = 0; g <= 2 && !hit; g++) {
+      const b = i + n + g; if (b + n > ws.length) continue;
+      let ok = true; for (let q = 0; q < n; q++) { const x = k(ws[i + q]); if (!x || x !== k(ws[b + q])) { ok = false; break; } }
+      if (ok) { ws[i + n - 1].t = ws[b + n - 1].t; ws[i + n - 1].e = Math.max(ws[i + n - 1].e, ws[b + n - 1].e); ws.splice(i + n, g + n); removed += g + n; hit = true; }
+    }
+  }
+  return {ws, removed};
+}
+function sanitize(ws) {   // tempos fora de ordem, palavras isoladas muito fora do lugar, sobreposição e duração negativa
+  const n = ws.length;
+  for (let i = 1; i < n - 1; i++) {
+    const p = ws[i - 1], x = ws[i], q = ws[i + 1];
+    if (Math.abs(x.s - p.s) > 6 && Math.abs(x.s - q.s) > 6 && Math.abs(q.s - p.s) <= 6) { const d = x.e - x.s; x.s = p.e; x.e = Math.max(p.e + .05, Math.min(q.s, p.e + d)); }
+  }
+  for (let i = 0; i < n - 1; i++) {   // palavra que ficou sozinha, longe do resto da frase (ex.: "Welcome ... to Lincoln.")
+    const x = ws[i], q = ws[i + 1];
+    if (q.s - x.e > 3 && !/[.!?…,;:]["”')\]]*$/.test(x.t) && /^\p{Ll}/u.test(q.t)) { const d = Math.min(.5, Math.max(.1, x.e - x.s)); x.e = q.s - .05; x.s = x.e - d; }
+  }
+  for (let i = 1; i < n; i++) {
+    if (ws[i].s < ws[i - 1].s - .01) ws[i].s = ws[i - 1].e;
+    if (ws[i].s < ws[i - 1].e) ws[i - 1].e = Math.max(ws[i - 1].s + .02, ws[i].s);
+  }
+  ws.forEach(w => { if (w.e < w.s + .02) w.e = w.s + .02; });
+  for (let i = 0; i < n; i++) {   // palavra esticada sobre um silêncio (ex.: "É" com 9 s): fica só com uma duração plausível
+    const w = ws[i], cap = Math.max(1.5, .15 * w.t.length);
+    if (w.e - w.s <= cap) continue;
+    const q = ws[i + 1], p = ws[i - 1], d = Math.min(cap, .3 + .08 * w.t.length);
+    if (q && q.s - w.e < .3 && !(p && w.s - p.e < .3)) w.s = w.e - d;   // colada na próxima fala: a palavra está no fim
+    else w.e = w.s + d;
+  }
+  return ws;
+}
+function segment(ws, c) {
+  const cap = c.maxc * c.maxl, gs = c.gap, out = [], blocks = []; let blk = [];
+  for (const w of ws) { if (blk.length && w.s - blk[blk.length - 1].e > c.pause) { blocks.push(blk); blk = []; } blk.push(w); }
+  if (blk.length) blocks.push(blk);
+  for (const B of blocks) {
+    const n = B.length, se = B.map((w, i) => endsSent(w, B[i + 1])), dd = B.map((w, i) => !!B[i + 1] && DASH.test(B[i + 1].t));
+    const ss = [], sn = []; for (let i = 0; i < n; i++) ss[i] = i && !(se[i - 1] || dd[i - 1]) ? ss[i - 1] : i;
+    for (let i = n - 1; i >= 0; i--) sn[i] = i < n - 1 && !(se[i] || dd[i]) ? sn[i + 1] : i;
+    const brk = k => {   // custo de quebrar depois da palavra k
+      if (se[k] || dd[k]) return 0;                          // fim de frase ou troca de fala: grátis
+      const w = B[k].t, lw = wk(w), nx = wk(B[k + 1].t);
+      let s = 36;                                            // corte no meio de uma oração: caro
+      if (/[,;:—–…]$/.test(w) || /\.\.\.$/.test(w) || CONJ.has(nx)) s = 8;         // ponto natural: vírgula ou conjunção
+      else if (PREP.has(nx)) s = 16;                         // início de locução preposicional
+      const g = B[k + 1].s - B[k].e; if (g > .25) s = Math.min(s, 10);
+      if (LINK.has(nx)) s += 8;                              // não separar "thousands | of miles"
+      if (BAD.has(lw)) s += 14; else if (WEAK.has(lw)) s += 5;
+      if (k - ss[k] + 1 <= 2 || sn[k + 1] - k <= 2) s += 12; // não deixar sobra de 1-2 palavras de uma frase
+      return s;
+    };
+    const cost = (j, i) => {
+      const txt = B.slice(j, i).map(x => x.t).join(' '), ch = txt.length, d = B[i - 1].e - B[j].s;
+      let dc = 0, dk = -1; for (let k = j; k < i - 1; k++) if (dd[k]) { dc++; dk = k; }
+      if (dc > 1 || (dc === 1 && c.maxl < 2)) return Infinity;
+      if (dc === 1) { const L = B.slice(j, dk + 1).map(x => x.t).join(' ').length + (DASH.test(B[j].t) ? 0 : 1), R = B.slice(dk + 1, i).map(x => x.t).join(' ').length; if (L > c.maxc || R > c.maxc) return Infinity; }
+      const brl = ch > c.maxc ? bl(txt, c.maxc) : null;
+      if (ch > cap || d > c.maxd || (ch > c.maxc && !brl)) return j === i - 1 ? 1000 : Infinity;
+      let inner = false; for (let k = j; k < i - 1; k++) if (se[k]) inner = true;
+      const midSent = inner && (ch > c.maxc ? !/[.!?…]["”')\]]*$/.test(brl.split('\n')[0]) : false);
+      // tempo realmente disponível: o fim da legenda pode ser estendido até a próxima palavra (o ajuste de tempos faz isso depois)
+      const room = (i < n ? B[i].s : B[i - 1].e + 2) - B[j].s - gs, de = Math.min(c.maxd, Math.max(d, room));
+      let s = 10 + (midSent ? 25 : 0);                         // custo fixo; caro se a frase termina no meio de uma linha ("thing. Your / bus")
+      const whole = (j === 0 || se[j - 1] || dd[j - 1]) && (i === n || se[i - 1] || dd[i - 1]);
+      if (whole && ch <= c.maxc) s -= 4;                       // frase completa numa linha só: preferida (estilo Avellan)
+      else if (ch < 18) s += (18 - ch) * .6;                   // evita legendas minúsculas
+      if (de < c.mind) s += (c.mind - de) * 30;                // legenda curta demais: muito caro
+      for (let k = j; k < i - 1; k++) s += dd[k] ? 5 : se[k] ? (ch <= c.maxc ? 9 : 30) : 0;
+      return s;
+    };
+    const best = Array(n + 1).fill(Infinity), prev = Array(n + 1).fill(0); best[0] = 0;
+    for (let i = 1; i <= n; i++) {
+      let ch = 0;
+      for (let j = i - 1; j >= 0; j--) {
+        ch += B[j].t.length + 1; if (ch > cap + 20 && j < i - 1) break;
+        const cs = cost(j, i); if (cs === Infinity) continue;
+        const v = best[j] + cs + (i < n ? brk(i - 1) : 0);
+        if (v < best[i]) { best[i] = v; prev[i] = j; }
+      }
+    }
+    const cuts = []; for (let i = n; i > 0; i = prev[i]) cuts.push([prev[i], i]); cuts.reverse();
+    for (const [j, i] of cuts) { const sl = B.slice(j, i); out.push({start: sl[0].s, end: sl[sl.length - 1].e, text: breakLines(sl.map(x => x.t).join(' '), c.maxc, c.maxl)}); }
+  }
+  return out;
+}
+
+/* ---------- Tempos: frames, duração mínima e máxima, intervalo (a velocidade de leitura não é limitada: vale a fala real) ---------- */
+function retime(cs, c) {
+  const f = .001, g = c.gap, sn = t => Math.round(t * 1000) / 1000, need = Math.min(c.mind, c.maxd);
+  cs.forEach(x => { x.start = sn(x.start); x.end = Math.max(sn(x.end), x.start + f); });
+  cs.forEach((x, i) => {   // legenda curta demais: antecipa o início (até 0,3 s) e atrasa a próxima (até 0,5 s), se houver folga
+    if (x.end - x.start >= need) return;
+    const p = cs[i - 1], n = cs[i + 1];
+    const lo = Math.max(x.start - .3, p ? p.end + g : 0);
+    if (lo < x.start) x.start = sn(Math.max(lo, x.end - need));
+    if (n && x.end - x.start < need) {
+      const want = x.start + need + g, room = Math.min(.5, n.end - need - n.start);
+      if (want > n.start && room > 0) n.start = sn(Math.min(want, n.start + room));
+    }
+  });
+  cs.forEach((x, i) => {
+    const n = cs[i + 1], lim = n ? sn(n.start) - g : Infinity;
+    // respiro: estende o fim até "resp" s após a fala; duração mínima só se couber antes da próxima
+    const want = Math.max(x.end + Math.max(0, c.resp || 0), x.start + need);
+    x.end = Math.min(lim, Math.max(x.end, Math.min(want, x.start + c.maxd)));
+    x.end = sn(x.end);
+    if (x.end <= x.start) x.end = x.start + f;
+  });
+}
+function mergeFast(cs, c) {   // meta de car./s: une legendas rápidas demais com a vizinha, sem cortar texto
+  if (!(c.cps > 0)) return cs;
+  const flat = x => x.text.replace(/\n/g, ' '), rate = x => flat(x).length / Math.max(.01, x.end - x.start);
+  const turn = x => /(^|\s)[-–—]\S/.test(x.text), endS = x => /[.!?…]["”')\]]*$/.test(flat(x));
+  const fits = (a, b) => {
+    if (!a || !b || turn(a) || turn(b) || endS(a)) return null;   // nunca une falas de diálogo nem frases diferentes
+    if (b.start - a.end > c.pause) return null;
+    const t = flat(a) + ' ' + flat(b);
+    if (t.length > c.maxc * c.maxl || b.end - a.start > c.maxd) return null;
+    if (t.length > c.maxc && (c.maxl < 2 || !bl(t, c.maxc))) return null;
+    if (t.length > c.maxc && /[.!?…]["”')\]]*$/.test(flat(a)) && bl(t, c.maxc).split('\n')[0] !== flat(a)) return null;   // frase nova não começa no meio da linha
+    return t;
+  };
+  for (let changed = true; changed;) {
+    changed = false; let worst = -1, wr = c.cps;
+    cs.forEach((x, i) => { const r = rate(x); if (r > wr && (fits(cs[i - 1], x) || fits(x, cs[i + 1]))) { wr = r; worst = i; } });
+    if (worst < 0) break;
+    const i = worst, p = cs[i - 1], n = cs[i + 1], tp = p && fits(p, cs[i]), tn = n && fits(cs[i], n);
+    const useP = tp && (!tn || (cs[i].start - p.end) <= (n.start - cs[i].end));   // une com o vizinho mais próximo
+    if (useP) { p.text = breakLines(tp, c.maxc, c.maxl); p.end = cs[i].end; cs.splice(i, 1); }
+    else { const x = cs[i]; x.text = breakLines(tn, c.maxc, c.maxl); x.end = n.end; cs.splice(i + 1, 1); }
+    changed = true;
+  }
+  return cs;
+}
+function layout(ws, c) { const cs = mergeFast(segment(ws, c), c); retime(cs, c); return cs; }
+function build() { cues = layout(words, cfg()); render(); }
+
+/* ---------- Editor ---------- */
+function check(i) {
+  const c = cfg(), x = cues[i], lines = x.text.split('\n'), chars = x.text.replace(/\n/g, ' ').length;
+  const d = x.end - x.start, p = cues[i - 1], iss = [];
+  if (lines.length > c.maxl) iss.push(`${lines.length} linhas`);
+  if (lines.some(l => l.length > c.maxc)) iss.push(`linha com mais de ${c.maxc} caracteres`);
+  if (d < c.mind - .005) iss.push('duração curta');
+  if (d > c.maxd + .005) iss.push('duração longa');
+  if (p && x.start - p.end < c.gap - .002) iss.push('intervalo menor que o mínimo');
+  return {iss, d, chars, lens: lines.map(l => l.length).join('+')};
+}
+function meta(i) {
+  const m = check(i), el = $('cues').children[i]?.querySelector('.meta'); if (!el) return;
+  el.innerHTML = `<span>${m.d.toFixed(2)} s</span><span>${m.lens} car.</span>` +
+    (m.iss.length ? m.iss.map(t => `<span class="bad">${t}</span>`).join('') : '<span class="ok">dentro do padrão</span>');
+}
+function summary() {
+  if (!cues.length) { $('sum').textContent = ''; return; }
+  let bad = 0; cues.forEach((_, i) => { if (check(i).iss.length) bad++; });
+  $('sum').innerHTML = `${cues.length} legendas · ${bad ? '<span class="w">' + bad + ' com avisos</span>' : '<span class="k">todas dentro do padrão</span>'}`;
+}
+function render() {
+  const L = $('cues');
+  if (!cues.length) { L.innerHTML = '<div class="empty">Nenhuma legenda gerada.</div>'; summary(); return; }
+  L.innerHTML = cues.map((x, i) => `<div class="cue" data-i="${i}"><div class="n">${i + 1}</div>
+    <div class="tt"><input class="s" aria-label="Início" value="${ts(x.start, '.')}"><input class="e" aria-label="Fim" value="${ts(x.end, '.')}"></div>
+    <textarea rows="2" aria-label="Texto">${esc(x.text)}</textarea><div class="meta"></div>
+    <div class="btns"><button data-a="seek">Ouvir</button><button data-a="split">Dividir</button><button data-a="merge">Unir</button><button data-a="del">Excluir</button></div></div>`).join('');
+  cues.forEach((_, i) => meta(i)); summary();
+}
+$('cues').addEventListener('input', e => {
+  const row = e.target.closest('.cue'); if (!row) return; const i = +row.dataset.i, x = cues[i];
+  if (e.target.tagName === 'TEXTAREA') x.text = e.target.value;
+  else { const v = parseT(e.target.value); if (isNaN(v)) return; if (e.target.classList.contains('s')) x.start = v; else x.end = v; }
+  meta(i); summary();
+});
+$('cues').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return; const i = +b.closest('.cue').dataset.i, c = cfg(), x = cues[i], a = b.dataset.a;
+  if (a === 'seek') { follow = true; $('player').currentTime = x.start; $('player').play(); return; }
+  if (a === 'del') cues.splice(i, 1);
+  if (a === 'merge' && cues[i + 1]) { x.text = breakLines(x.text + ' ' + cues[i + 1].text, c.maxc, c.maxl); x.end = cues[i + 1].end; cues.splice(i + 1, 1); }
+  if (a === 'split') {
+    const t = x.text; let p = t.indexOf('\n');
+    if (p < 0) { const m = t.length >> 1, lo = t.lastIndexOf(' ', m), hi = t.indexOf(' ', m); p = lo < 0 ? hi : hi < 0 ? lo : (m - lo <= hi - m ? lo : hi); }
+    if (p < 0) return;
+    const t1 = t.slice(0, p).trim(), t2 = t.slice(p + 1).trim(), g = c.gap;
+    const mid = x.start + (x.end - x.start) * t1.length / (t1.length + t2.length);
+    cues.splice(i, 1, {start: x.start, end: mid - g / 2, text: breakLines(t1, c.maxc, c.maxl)}, {start: mid + g / 2, end: x.end, text: breakLines(t2, c.maxc, c.maxl)});
+  }
+  render();
+});
+$('player').addEventListener('timeupdate', () => {
+  const t = $('player').currentTime; let k = cues.findIndex(x => t >= x.start && t <= x.end);
+  [...$('cues').children].forEach((r, i) => r.classList.toggle('now', i === k));
+  if (k >= 0 && follow && !$('player').paused) $('cues').children[k].scrollIntoView({block: 'nearest'});
+});
+// a lista acompanha o áudio só até você rolar a página; clicar em "Ouvir" volta a acompanhar
+let follow = true;
+const stopFollow = () => { follow = false; };
+addEventListener('wheel', stopFollow, {passive: true}); addEventListener('touchmove', stopFollow, {passive: true});
+addEventListener('keydown', e => { if (['PageUp', 'PageDown', 'Home', 'End', 'ArrowUp', 'ArrowDown'].includes(e.key) && !/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) stopFollow(); });
+addEventListener('mousedown', e => { if (e.target === document.documentElement || e.clientX > document.documentElement.clientWidth) stopFollow(); });
+let undo = null;
+$('regen').onclick = () => {
+  if (!words.length) return;
+  if (cues.some(x => x.edited) && !confirm('Isso descarta suas edições. Continuar?')) return;
+  undo = JSON.parse(JSON.stringify(cues)); build();
+};
+$('apply').onclick = () => {   // re-segmenta o texto atual (com suas correções), refazendo divisões, quebras e tempos
+  if (!cues.length) return;
+  undo = JSON.parse(JSON.stringify(cues));
+  const c = cfg(), ws = [];
+  cues.forEach(x => {
+    const tk = x.text.replace(/\n/g, ' ').trim().split(/\s+/).filter(Boolean); if (!tk.length) return;
+    const tot = tk.join('').length, d = x.end - x.start; let t = x.start;
+    tk.forEach(w => { const e = t + d * w.length / tot; ws.push({t: w, s: t, e}); t = e; });
+  });
+  cues = layout(fixDashes(ws), c); render();
+};
+$('undo').onclick = () => { if (undo) { cues = undo; undo = null; render(); } };
+
+/* ---------- Exportação ---------- */
+function exportAs(kind) {
+  if (!cues.length) return;
+  const xml = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  let out, mime = 'text/plain';
+  if (kind === 'srt') out = cues.map((x, i) => `${i + 1}\n${ts(x.start, ',')} --> ${ts(x.end, ',')}\n${x.text}\n`).join('\n');
+  if (kind === 'vtt') { out = 'WEBVTT\n\n' + cues.map(x => `${ts(x.start, '.')} --> ${ts(x.end, '.')}\n${x.text}\n`).join('\n'); mime = 'text/vtt'; }
+  if (kind === 'txt') out = cues.map(x => x.text.replace(/\n/g, ' ')).join('\n');
+  if (kind === 'ttml') {
+    out = `<?xml version="1.0" encoding="UTF-8"?>\n<tt xmlns="http://www.w3.org/ns/ttml" xmlns:tts="http://www.w3.org/ns/ttml#styling" xmlns:ttp="http://www.w3.org/ns/ttml#parameter" xml:lang="${$('lang').value || 'und'}" ttp:timeBase="media">\n<body><div>\n` +
+      cues.map(x => `<p begin="${ts(x.start, '.')}" end="${ts(x.end, '.')}">${xml(x.text).replace(/\n/g, '<br/>')}</p>`).join('\n') + '\n</div></body></tt>';
+    mime = 'application/ttml+xml';
+  }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([out], {type: mime + ';charset=utf-8'}));
+  a.download = (file ? file.name.replace(/\.[^.]+$/, '') : 'legenda') + '.' + kind; a.click();
+}
+const kv = (m, k, v) => new Promise((res, rej) => {
+  const r = indexedDB.open('legendas', 1); r.onupgradeneeded = () => r.result.createObjectStore('kv'); r.onerror = () => rej(r.error);
+  r.onsuccess = () => { const st = r.result.transaction('kv', m === 'get' ? 'readonly' : 'readwrite').objectStore('kv'), q = m === 'get' ? st.get(k) : st.put(v, k); q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error); };
+});
+let mdir = null;
+const showM = () => { $('mdir').textContent = mdir ? mdir.name : 'cache do navegador'; $('resetm').hidden = !mdir; };
+async function pickM() { try { mdir = await showDirectoryPicker({id: 'modelos', mode: 'readwrite'}); await kv('set', 'modeldir', mdir); showM(); } catch (e) {} }
+document.querySelectorAll('[data-x]').forEach(b => b.onclick = () => exportAs(b.dataset.x));
+
+/* ---------- Transcrição ---------- */
+// preços da OpenAI em US$ por minuto de áudio (conferidos em nov/2026)
+const PRICE = {whisper: .006, gpt: .0045, groq: .111 / 60, scribe: .20 / 60};   // US$ por minuto
+const PROV = {   // chave e textos de cada fornecedor
+  openai: {name: 'Chave da API OpenAI', store: 'openaiKey', ph: 'sk-...', tip: 'Crie em platform.openai.com, em API keys. A chave é enviada apenas para a OpenAI e só fica guardada se você marcar "Lembrar". A cobrança é por minuto de áudio.\n\nArquivos acima de 24 MB são divididos automaticamente em partes de ~10 min, cortadas em silêncio.'},
+  groq: {name: 'Chave da API Groq', store: 'groqKey', ph: 'gsk_...', tip: 'Crie em console.groq.com, em API Keys (tem plano grátis com limite por hora). A chave é enviada apenas para a Groq e só fica guardada se você marcar "Lembrar".\n\nArquivos acima de 24 MB são divididos automaticamente em partes de ~10 min, cortadas em silêncio.'},
+  eleven: {name: 'Chave da API ElevenLabs', store: 'elevenKey', ph: 'sk_...', tip: 'Crie em elevenlabs.io, em Developers → API Keys, com permissão de Speech to Text. A chave é enviada apenas para a ElevenLabs e só fica guardada se você marcar "Lembrar".\n\nO arquivo é enviado inteiro (aceita até 5 GB), sem divisão.'}
+};
+const provOf = m => m === 'groq' ? 'groq' : m === 'scribe' ? 'eleven' : 'openai';
+const keys = {};
+let spent = {w: 0, g: 0, q: 0, s: 0}, durSec = 0;
+const usd = v => 'US$ ' + v.toFixed(v < .1 ? 3 : 2).replace('.', ',');
+function showCost() {
+  const m = $('engine').value, el = $('cost');
+  el.hidden = false;   // a linha do custo fica sempre lá, para a altura dos cartões não mudar
+  if (m === 'local') { el.innerHTML = 'Custo: <b>grátis</b> (roda no seu computador)'; return; }
+  if (!durSec) { el.innerHTML = 'Custo estimado: <span style="color:var(--mut)">escolha um arquivo</span>'; return; }
+  const kt = m === 'scribe' && sTerms().length ? 1.2 : 1, min = durSec / 60, v = min * (m === 'groq' ? PRICE.groq : m === 'scribe' ? PRICE.scribe * kt : PRICE.whisper + (m === 'gpt' ? PRICE.gpt : 0));
+  el.hidden = false;
+  el.innerHTML = `Custo estimado: <b>${usd(v)}</b> (${min < 1 ? Math.round(durSec) + ' s' : Math.round(min) + ' min'}) <span class="tip" tabindex="0" data-tip="Scribe v3: ${usd(PRICE.scribe)} por minuto, +20% se houver termos no contexto.&#10;Groq: ${usd(PRICE.groq)} por minuto (mínimo de 10 s por envio).&#10;whisper-1: ${usd(PRICE.whisper)} por minuto.&#10;gpt-transcribe + whisper-1: ${usd(PRICE.whisper + PRICE.gpt)} por minuto, porque o áudio é transcrito pelos dois.&#10;&#10;No modo gpt-transcribe o custo pode subir um pouco se alguma parte precisar ser reenviada. O valor real aparece no fim da transcrição. Preços de novembro de 2026.">?</span>`;
+}
+const status = (t, err) => { $('st').textContent = t; $('st').className = err ? 'err' : ''; };
+const files = {};
+function prog(p) {
+  if (p.status === 'progress' && p.total) {
+    files[p.file] = {l: p.loaded, t: p.total};
+    let l = 0, t = 0; for (const k in files) { l += files[k].l; t += files[k].t; }
+    $('bar').style.display = 'block'; $('bar').value = 100 * l / t;
+    status(`Baixando modelo… ${(100 * l / t).toFixed(0)}% (${(t / 1048576).toFixed(0)} MB, só na primeira vez)`);
+  } else if (p.status === 'ready') { $('bar').style.display = 'none'; status('Modelo carregado.'); }
+}
+async function decode(f) {
+  const t0 = Date.now(), iv = setInterval(() => status(`Decodificando áudio… ${Math.round((Date.now() - t0) / 1000)} s (arquivos longos podem levar alguns minutos)`), 500);
+  try {
+    const ctx = new AudioContext({sampleRate: 16000});
+    const ab = await ctx.decodeAudioData(await f.arrayBuffer()), n = ab.length, out = new Float32Array(n);
+    for (let c = 0; c < ab.numberOfChannels; c++) { const d = ab.getChannelData(c); for (let i = 0; i < n; i++) out[i] += d[i] / ab.numberOfChannels; }
+    ctx.close(); return out;
+  } catch (e) {
+    throw new Error('O navegador não conseguiu abrir este arquivo (formato incomum ou vídeo muito grande). Use o motor ElevenLabs Scribe, que envia o arquivo inteiro sem precisar abri-lo, ou converta para MP3 (por exemplo no VLC: Mídia → Converter/Salvar) e carregue de novo.');
+  } finally { clearInterval(iv); }
+}
+function punct(ws, text) {   // a API devolve palavras sem pontuação; o texto completo tem. Alinha um com o outro.
+  const toks = (text || '').trim().split(/\s+/).filter(Boolean);
+  return toks.length && ws.length ? align(toks, ws, true) : ws;
+}
+let mainPipe, mainKey;
+async function runMain(audio, o) {
+  const {pipeline, env} = await import(TJS), k = o.model + o.device + (o.dir ? o.dir.name : '');
+  if (k !== mainKey) {
+    env.useCustomCache = !!o.dir; env.useBrowserCache = !o.dir; if (o.dir) env.customCache = makeCache(o.dir);
+    mainPipe = await pipeline('automatic-speech-recognition', o.model, {device: o.device, dtype: o.dtype, progress_callback: prog}); mainKey = k;
+  }
+  return transcribeParts(mainPipe, audio, o.parts, o, partProg);
+}
+function partProg(i, n) { $('bar').style.display = 'block'; $('bar').value = 100 * i / n; status(`Transcrevendo parte ${i + 1} de ${n}…`); }
+function pausePoint(a, lo, hi, w = 4) {   // centro da janela mais silenciosa (w × 50 ms) entre lo e hi
+  const fr = 800, E = [];
+  for (let i = lo; i + fr <= hi; i += fr) { let e = 0; for (let j = 0; j < fr; j++) e += a[i + j] * a[i + j]; E.push(e); }
+  let best = 0, bm = Infinity;
+  for (let k = 0; k + w <= E.length; k++) { let t = 0; for (let q = 0; q < w; q++) t += E[k + q]; if (t < bm) { bm = t; best = k; } }
+  return lo + Math.floor((best + w / 2) * fr);
+}
+function plan(audio) {   // partes de até 28 s, cortadas na pausa mais clara entre 16 e 28 s
+  const sr = 16000, parts = []; let a = 0;
+  while (audio.length - a > 28 * sr) { const b = pausePoint(audio, a + 16 * sr, a + 28 * sr); parts.push([a, b]); a = b; }
+  parts.push([a, audio.length]); return parts;
+}
+async function checkModelDir() {
+  if (!mdir) return null;
+  try {
+    let p = await mdir.queryPermission({mode: 'readwrite'}); if (p !== 'granted') p = await mdir.requestPermission({mode: 'readwrite'});
+    if (p !== 'granted') { alert('Sem permissão na pasta dos modelos. Vou usar o cache do navegador desta vez.'); return null; }
+    for await (const _ of mdir.values()) break;
+    return mdir;
+  } catch (e) {
+    alert('A pasta dos modelos não foi encontrada (movida ou apagada). Escolha outra em "Pasta dos modelos". Vou usar o cache do navegador desta vez.');
+    mdir = null; kv('set', 'modeldir', null).catch(() => {}); showM(); return null;
+  }
+}
+function wav(f) {
+  const n = f.length, b = new ArrayBuffer(44 + n * 2), v = new DataView(b), s = (o, t) => [...t].forEach((c, i) => v.setUint8(o + i, c.charCodeAt(0)));
+  s(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); s(8, 'WAVEfmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, 16000, true); v.setUint32(28, 32000, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true); s(36, 'data'); v.setUint32(40, n * 2, true);
+  for (let i = 0; i < n; i++) { const x = Math.max(-1, Math.min(1, f[i])); v.setInt16(44 + i * 2, x < 0 ? x * 0x8000 : x * 0x7fff, true); }
+  return new Blob([b], {type: 'audio/wav'});
+}
+function quietPoint(a, target, win) {   // ponto mais silencioso perto de "target" para não cortar palavras
+  const fr = 800; let best = target, bm = 1e9;
+  for (let i = Math.max(0, target - win * 16000); i < Math.min(a.length - fr, target + win * 16000); i += fr) {
+    let e = 0; for (let j = 0; j < fr; j++) e += a[i + j] * a[i + j]; if (e < bm) { bm = e; best = i; }
+  }
+  return best + (fr >> 1);
+}
+function runLocal(audio, o) {
+  return new Promise((res, rej) => {
+    if (!worker) worker = new Worker(URL.createObjectURL(new Blob([W], {type: 'text/javascript'})), {type: 'module'});
+    worker.onerror = e => { worker = null; rej(new Error('worker:' + (e.message || 'sem detalhes'))); };
+    worker.onmessage = ({data: d}) => d.type === 'progress' ? prog(d.p) : d.type === 'part' ? partProg(d.i, d.n) : d.type === 'done' ? res(d.chunks) : rej(new Error(d.message));
+    worker.postMessage({...o, audio});
+  });
+}
+function toWords(ch) {
+  const o = []; let prev = 0;
+  for (const k of ch) {
+    const tk = k.text.trim().split(/\s+/).filter(Boolean); if (!tk.length) continue;
+    const s = k.timestamp[0] ?? prev; let e = k.timestamp[1] ?? s + .3 * tk.length; if (e <= s) e = s + .2;
+    const nc = k.text.trim().length; if (e - s > 2 && nc / (e - s) < 6) e = s + Math.max(.6, nc / 12);   // trecho esticado sobre silêncio
+    const tot = tk.join('').length; let t = s;
+    for (const x of tk) { const d = (e - s) * x.length / tot; o.push({t: x, s: t, e: t + d}); t += d; }
+    prev = e;
+  }
+  return o;
+}
+async function post(url, headers, body, who) {   // fetch com mensagem clara se o navegador bloquear
+  try { return await fetch(url, {method: 'POST', headers, body}); }
+  catch (e) { throw new Error(`Não consegui falar com a ${who} (${e.message}). Verifique a internet; se persistir, o navegador pode estar bloqueando chamadas diretas a esse serviço.`); }
+}
+function sTerms() {   // termos do contexto para o "keyterms" do Scribe
+  return $('ctx').value.split(/[,;\n]+/).map(t => t.replace(/[<>{}\[\]\\]/g, '').replace(/^(ex\.?|nomes?|termos?)\s*:\s*/i, '').trim())
+    .filter(t => t && t.length <= 50 && t.split(/\s+/).length <= 5).slice(0, 1000);
+}
+async function scribeCall() {   // ElevenLabs Scribe v3: arquivo inteiro, tempo por palavra e quem fala
+  status('Enviando para a ElevenLabs…');
+  for (let tent = 0; ; tent++) {
+    const fd = new FormData(); fd.append('file', file, file.name); fd.append('model_id', 'scribe_v3');
+    fd.append('timestamps_granularity', 'word'); fd.append('diarize', 'true'); fd.append('tag_audio_events', $('events').checked ? 'true' : 'false');
+    if ($('lang').value) fd.append('language_code', $('lang').value);
+    const kt = sTerms(); kt.forEach(t => fd.append('keyterms', t));
+    const r = await post('https://api.elevenlabs.io/v1/speech-to-text', {'xi-api-key': $('key').value.trim()}, fd, 'ElevenLabs');
+    const j = await r.json().catch(() => ({}));
+    if (r.ok) {
+      spent.s += durSec * (kt.length ? 1.2 : 1);
+      const out = []; let spk = null;
+      for (const w of (j.words || [])) {
+        if (w.type === 'spacing' || !(w.text || '').trim() || w.start == null) continue;
+        let t = w.text.trim();
+        if (w.type === 'audio_event' && !/^[(\[]/.test(t)) t = '(' + t + ')';
+        if (w.speaker_id != null && spk != null && w.speaker_id !== spk && w.type !== 'audio_event' && out.length) t = '-' + t.replace(/^[-–—]/, '');   // troca de quem fala = hífen de diálogo
+        if (w.speaker_id != null && w.type !== 'audio_event') spk = w.speaker_id;
+        if (!/[\p{L}\p{N}]/u.test(t) && out.length) { out[out.length - 1].t += t.replace(/^-/, ''); continue; }   // pontuação solta ("...") vai para a palavra anterior
+        out.push({t, s: +w.start, e: +w.end});
+      }
+      return out;
+    }
+    if (tent < 2 && (r.status === 429 || r.status >= 500)) { await new Promise(z => setTimeout(z, 3000 * (tent + 1))); continue; }
+    const d = j.detail; throw new Error('ElevenLabs: ' + ((d && (d.message || (typeof d === 'string' ? d : JSON.stringify(d)))) || 'erro ' + r.status));
+  }
+}
+const HALL = /^(you\.?|thank you\.?|thanks for watching!?|obrigad[oa]\.?|legendas pela comunidade amara\.org|subtítulos realizados por la comunidad de amara\.org)$/i;
+function halluc(s, all) {   // frase que o Whisper costuma inventar em silêncio/música ("You"), isolada por pausas
+  if (!HALL.test(String(s.text || '').trim())) return false;
+  const i = all.indexOf(s), p = all[i - 1], n = all[i + 1];
+  return (!p || s.start - p.end > 1) && (!n || n.start - s.end > 1);
+}
+const groqBroken = t => { const w = t.trim().split(/\s+/).filter(Boolean); return w.length >= 6 && !/[.,!?;:…]/.test(t); };   // trecho que a Groq devolveu sem pontuação (e com palavras cortadas)
+let groqBad = [];
+function groqWords(j, off) {   // Groq: as palavras vêm cortadas no 1º acento/apóstrofo. Alinha trecho a trecho com o texto do trecho.
+  const all = (j.words || []).map(w => ({t: String(w.word || '').trim(), s: w.start + off, e: w.end + off})).filter(w => w.t);
+  const segs = (j.segments || []).filter(s => !(s.no_speech_prob > .6 && s.avg_logprob < -1) && !halluc(s, j.segments));   // trecho que provavelmente é silêncio/alucinação
+  if (!segs.length) return punct(all, j.text);
+  const out = []; let prevText = '';
+  for (const s of segs) {
+    const txt = String(s.text || '').trim(); if (!txt) continue;
+    if (txt === prevText) continue; prevText = txt;
+    if (groqBroken(txt)) groqBad.push([s.start + off, s.end + off]);   // trecho repetido em seguida ("We need to fight." ×3)
+    const a = s.start + off, b = s.end + off, ws = all.filter(w => (w.s + w.e) / 2 >= a - .05 && (w.s + w.e) / 2 <= b + .05);
+    const toks = txt.split(/\s+/).filter(Boolean);
+    if (ws.length) out.push(...align(toks, ws, true));
+    else { const L = toks.map(t => t.length + 1), tot = L.reduce((x, y) => x + y, 0); let t = a; toks.forEach((w, k) => { const d = (b - a) * L[k] / tot; out.push({t: w, s: t, e: t + d}); t += d; }); }
+  }
+  for (let i = 1; i < out.length; i++) if (out[i].s < out[i - 1].s) { out[i].s = out[i - 1].s + .01; out[i].e = Math.max(out[i].e, out[i].s + .05); }   // mantém a ordem do texto sem empurrar o resto (a sobreposição é aparada depois)
+  return out;
+}
+async function apiCall(blob, name, off) {
+  const groq = $('engine').value === 'groq', gm = window.groqModel || 'whisper-large-v3';
+  for (let tent = 0; ; tent++) {
+    const fd = new FormData(); fd.append('file', blob, name); fd.append('model', groq ? gm : 'whisper-1');
+    const PUN = {pt: 'Olá, tudo bem? Sim, vamos começar.', en: 'Hello, how are you? Yes, let\'s begin.', es: 'Hola, ¿qué tal? Sí, vamos a empezar.'};
+    const pr = (groq && $('ctx').value.trim()) || PUN[$('lang').value];   // frase pontuada: evita o Whisper devolver trechos inteiros sem pontuação
+    if (pr) fd.append('prompt', pr); fd.append('response_format', 'verbose_json'); fd.append('timestamp_granularities[]', 'word'); fd.append('timestamp_granularities[]', 'segment');
+    if ($('lang').value) fd.append('language', $('lang').value);
+    const r = await post(groq ? 'https://api.groq.com/openai/v1/audio/transcriptions' : 'https://api.openai.com/v1/audio/transcriptions', {Authorization: 'Bearer ' + $('key').value.trim()}, fd, groq ? 'Groq' : 'OpenAI');
+    const j = await r.json().catch(() => ({}));
+    if (r.ok && groq) { spent.q += Math.max(10, +j.duration || 0); return groqWords(j, off); }
+    if (r.ok && Array.isArray(j.segments) && j.segments.length) {
+      spent.w += +j.duration || 0;
+      const bad = j.segments.filter(s => (s.no_speech_prob > .6 && s.avg_logprob < -1) || halluc(s, j.segments));   // trecho que provavelmente é silêncio, música ou alucinação
+      const inBad = w => bad.some(s => (w.start + w.end) / 2 >= s.start && (w.start + w.end) / 2 <= s.end);
+      const ws = (j.words || []).filter(w => !inBad(w)).map(w => ({t: w.word.trim(), s: w.start + off, e: w.end + off})).filter(w => w.t);
+      const text = bad.length ? j.segments.filter(s => !bad.includes(s)).map(s => s.text).join(' ') : j.text;
+      return punct(ws, text);
+    }
+    if (r.ok) { spent.w += +j.duration || 0; return punct((j.words || []).map(w => ({t: w.word.trim(), s: w.start + off, e: w.end + off})).filter(w => w.t), j.text); }
+    if (tent < 2 && (r.status === 429 || r.status >= 500)) { await new Promise(z => setTimeout(z, 3000 * (tent + 1))); continue; }
+    throw new Error(j.error?.message || 'Erro da API (' + r.status + ')');
+  }
+}
+let gptNoChunk = false;
+async function gptCall(blob, name, noCtx, noChunk) {   // texto do gpt-transcribe (sem tempos)
+  for (let tent = 0; ; tent++) {
+    const fd = new FormData(); fd.append('file', blob, name); fd.append('model', 'gpt-transcribe');
+    if (!noCtx && $('ctx').value.trim()) fd.append('prompt', $('ctx').value.trim());
+    if (!gptNoChunk && !noChunk) fd.append('chunking_strategy', 'auto');
+    const r = await fetch('https://api.openai.com/v1/audio/transcriptions', {method: 'POST', headers: {Authorization: 'Bearer ' + $('key').value.trim()}, body: fd});
+    const j = await r.json().catch(() => ({}));
+    if (r.ok) { spent.g += +(j.usage?.seconds) || 0; if (!(j.text || '').trim()) { (window.gptRaw = window.gptRaw || []).push(name + ': ' + JSON.stringify(j).slice(0, 300)); console.warn('[legendas] gpt-transcribe vazio', name, j); } return j.text || ''; }
+    const msg = j.error?.message || 'Erro da API (' + r.status + ')';
+    if (r.status === 400 && /chunking/i.test(msg) && !gptNoChunk) { gptNoChunk = true; continue; }
+    if (tent < 2 && (r.status === 429 || r.status >= 500)) { await new Promise(z => setTimeout(z, 3000 * (tent + 1))); continue; }
+    throw new Error('gpt-transcribe: ' + msg);
+  }
+}
+function near(a, b) {   // diferença de no máximo 1 letra
+  if (Math.abs(a.length - b.length) > 1) return false;
+  let i = 0, j = 0, d = 0;
+  while (i < a.length && j < b.length) {
+    if (a[i] === b[j]) { i++; j++; continue; }
+    if (++d > 1) return false;
+    if (a.length > b.length) i++; else if (a.length < b.length) j++; else { i++; j++; }
+  }
+  return d + (a.length - i) + (b.length - j) <= 1;
+}
+function align(gt, ww, keep) {   // keep: o texto (gt) é da mesma transcrição e é sempre o que vale; as palavras (ww) só dão os tempos   // dá a cada palavra do texto novo (gt) o tempo da palavra equivalente do whisper-1 (ww)
+  const key = s => s.toLowerCase().normalize('NFD').replace(/[^\p{L}\p{N}]/gu, '');
+  const A = gt.map(key), B = ww.map(w => key(w.t)), n = A.length, m = B.length;
+  if (!n || !m) return ww;
+  const sim = (a, b) => a && a === b ? 2 : (a && b && Math.min(a.length, b.length) >= 4 && near(a, b)) ? 1 : (a && b && a.length > b.length && a.startsWith(b)) ? 1 : -1;
+  const W = Math.max(150, Math.abs(n - m) + 60), K = 2 * W + 1, NEG = -1e9;   // alinhamento em faixa ao redor da diagonal
+  const S = new Int32Array((n + 1) * K).fill(NEG), D = new Uint8Array((n + 1) * K), jc = i => Math.round(i * m / n);
+  const idx = (i, j) => { const k = j - jc(i) + W; return k >= 0 && k < K ? i * K + k : -1; };
+  for (let i = 0; i <= n; i++) {
+    const c = jc(i);
+    for (let j = Math.max(0, c - W); j <= Math.min(m, c + W); j++) {
+      const id = idx(i, j); if (!i && !j) { S[id] = 0; continue; }
+      let best = NEG, dir = 0, p;
+      if (i && j && (p = idx(i - 1, j - 1)) >= 0 && S[p] > NEG) { const v = S[p] + sim(A[i - 1], B[j - 1]); if (v > best) { best = v; dir = 1; } }
+      if (i && (p = idx(i - 1, j)) >= 0 && S[p] > NEG && S[p] - 1 > best) { best = S[p] - 1; dir = 2; }
+      if (j && (p = idx(i, j - 1)) >= 0 && S[p] > NEG && S[p] - 1 > best) { best = S[p] - 1; dir = 3; }
+      S[id] = best; D[id] = dir;
+    }
+  }
+  const mA = new Array(n).fill(-1);   // par de cada palavra do texto novo
+  for (let i = n, j = m; i > 0 || j > 0;) {
+    const id = idx(i, j); if (id < 0 || !D[id]) break; const d = D[id];
+    if (d === 1) { if (sim(A[i - 1], B[j - 1]) > 0) mA[i - 1] = j - 1; i--; j--; } else if (d === 2) i--; else j--;
+  }
+  if (!mA.some(v => v >= 0)) {
+    if (!keep) return ww;
+    const a0 = ww[0].s, a1 = ww[m - 1].e, L = gt.map(t => t.length + 1), tot = L.reduce((x, y) => x + y, 0); let t = a0;
+    return gt.map((w, k) => { const d = (a1 - a0) * L[k] / tot, o = {t: w, s: t, e: t + d}; t += d; return o; });
+  }
+  // monta a saída. Se o gpt-transcribe pulou um trecho (várias palavras do whisper-1 sem nenhuma do gpt entre duas âncoras), o trecho do whisper-1 entra.
+  const out = []; let ia = 0, jb = 0;
+  for (const [ai, bj] of [...mA.map((v, i) => [i, v]).filter(x => x[1] >= 0), [n, m]]) {
+    const na = ai - ia, nb = bj - jb;
+    // trecho em que o gpt-transcribe pulou falas ou inventou outras (ex.: "Axé!" no lugar de 4 falas): entra o texto do whisper-1, sem duplicar
+    if (!keep && nb >= 4 && (na === 0 || nb >= 2 * na + 4)) for (let k = jb; k < bj; k++) out.push({t: ww[k].t, s: ww[k].s, e: ww[k].e});
+    else for (let k = ia; k < ai; k++) out.push({t: gt[k], s: null, e: null});
+    if (ai < n) out.push({t: gt[ai], s: ww[bj].s, e: ww[bj].e});
+    ia = ai + 1; jb = bj + 1;
+  }
+  const N = out.length;
+  for (let i = 0; i < N;) {   // palavras sem par: distribui o tempo entre os vizinhos que têm
+    if (out[i].s != null) { i++; continue; }
+    let j = i; while (j < N && out[j].s == null) j++;
+    const L = out.slice(i, j).map(w => w.t.length + 1), tot = L.reduce((x, y) => x + y, 0), t0 = i ? out[i - 1].e : null, t1 = j < N ? out[j].s : null;
+    let a0, a1;
+    if (t0 != null && t1 != null) {
+      a0 = t0; a1 = Math.max(t1, t0 + .1 * (j - i));
+      const need = tot * .07 + .15;   // duração plausível para essas palavras
+      if (a1 - a0 > need * 1.5) {     // há silêncio no meio: encosta as palavras no lado certo da pausa
+        const startsNew = /^\p{Lu}/u.test(out[i].t) || (i && /[.!?…]["”')\]]*$/.test(out[i - 1].t));
+        if (startsNew) a0 = a1 - need; else a1 = a0 + need;
+      }
+    }
+    else if (t1 != null) { a1 = t1; a0 = t1 - Math.min(tot * .07, 4); }
+    else { a0 = t0; a1 = t0 + Math.min(tot * .07, 4); }
+    let t = a0; for (let k = i; k < j; k++) { const d = (a1 - a0) * L[k - i] / tot; out[k].s = t; out[k].e = t + d; t += d; }
+    i = j;
+  }
+  return out;
+}
+let groqFixed = 0;
+async function groqRetry(words, audio) {   // reenvia sozinhos os trechos que a Groq devolveu quebrados, com um pouco de folga
+  groqFixed = 0; if (!groqBad.length) return words;
+  const bad = groqBad.slice(); groqBad = [];
+  audio = audio || await decode(file);
+  const sr = 16000;
+  for (let i = 0; i < bad.length; i++) {
+    status(`Groq: refazendo trecho ${i + 1} de ${bad.length} que veio sem pontuação…`);
+    const a = Math.max(0, bad[i][0] - .1), b = Math.min(audio.length / sr, bad[i][1] + .1);
+    let fresh = null;
+    for (const model of ['whisper-large-v3', 'whisper-large-v3-turbo']) {   // se o large-v3 errar de novo, tenta o turbo da Groq
+      let f;
+      try { groqBad = []; window.groqModel = model; f = await apiCall(wav(audio.subarray(Math.floor(a * sr), Math.floor(b * sr))), `trecho${i + 1}.wav`, a); }
+      catch (e) { f = null; } finally { window.groqModel = null; }
+      const still = groqBad.length; groqBad = [];
+      if (f && f.length && !still) { fresh = f; break; }
+    }
+    if (!fresh) continue;   // veio quebrado nas duas: mantém o original
+    // troca só as palavras do trecho, no mesmo lugar da lista (sem reordenar o resto pelo tempo)
+    const s0 = bad[i][0] - .05, s1 = bad[i][1] + .05, mid = w => (w.s + w.e) / 2;
+    let k0 = words.findIndex(w => mid(w) >= s0); if (k0 < 0) k0 = words.length;
+    let k1 = k0; while (k1 < words.length && mid(words[k1]) <= s1) k1++;
+    const ins = fresh.filter(w => mid(w) >= s0 - .25 && mid(w) <= s1 + .25);
+    if (!ins.length) continue;
+    words.splice(k0, k1 - k0, ...ins); groqFixed++;
+  }
+  return words;
+}
+async function cloud(mode) {
+  if (!$('key').value.trim()) throw new Error('Informe a ' + PROV[provOf(mode)].name.toLowerCase() + '.');
+  if (mode === 'scribe') return scribeCall();
+  const sr = 16000, cut = (audio, sec) => {   // partes de ~sec segundos, cortadas em silêncio
+    const L = sec * sr, ps = [];
+    for (let a = 0; a < audio.length;) { const w = Math.min(20, sec / 6) * sr, b = a + L * 1.25 < audio.length ? pausePoint(audio, a + L - w, a + L + w, 8) : audio.length; ps.push([a, b]); a = b; }
+    return ps;
+  };
+  const small = file.size <= 24 * 1048576;
+  if (mode === 'groq') groqBad = [];
+  if (mode !== 'gpt' && small) { status('Enviando para a API…'); const w = await apiCall(file, file.name, 0); return mode === 'groq' ? groqRetry(w) : w; }
+  const audio = await decode(file);
+  // whisper-1 (tempos por palavra): arquivo inteiro se couber, senão partes de ~10 min
+  const wparts = small ? null : cut(audio, 600);
+  const whisperJob = (async () => {
+    if (small) return apiCall(file, file.name, 0);
+    let all = [];
+    for (let i = 0; i < wparts.length; i++) all = all.concat(await apiCall(wav(audio.subarray(...wparts[i])), `parte${i + 1}.wav`, wparts[i][0] / sr));
+    return all;
+  })();
+  if (mode !== 'gpt') { status(`Enviando ${wparts.length} partes para a API…`); const w = await whisperJob; return mode === 'groq' ? groqRetry(w, audio) : w; }
+  // gpt-transcribe: partes de ~2 min, porque em áudios longos ele costuma parar antes do fim ou pular trechos
+  const gparts = cut(audio, 120), texts = new Array(gparts.length); let done = 0;
+  const nw = s => (s || '').trim().split(/\s+/).filter(Boolean).length;
+  status(`Transcrevendo com gpt-transcribe: 0 de ${gparts.length} partes…`);
+  window.gptRaw = [];
+  const tryPart = async (a, b, base) => {
+    const name = base + '.wav';   // tenta: normal → sem VAD do servidor → sem contexto → em pedaços menores
+    const blob = wav(audio.subarray(a, b)), sec = (b - a) / sr, ok = t => nw(t) >= sec * .5;
+    let t = await gptCall(blob, name); if (ok(t)) return t;
+    t = await gptCall(blob, name, false, true); if (ok(t)) return t;
+    t = await gptCall(blob, name, true, true); if (ok(t)) return t;
+    if (sec < 45) return t;
+    const q = Math.min(10, sec / 6) * sr, m = pausePoint(audio, ((a + b) >> 1) - q, ((a + b) >> 1) + q, 8);
+    return (await tryPart(a, m, base + 'a')) + ' ' + (await tryPart(m, b, base + 'b'));
+  };
+  for (let i = 0; i < gparts.length; i++) {   // uma parte por vez
+    texts[i] = await tryPart(gparts[i][0], gparts[i][1], `trecho${i + 1}`);
+    status(`Transcrevendo com gpt-transcribe: ${++done} de ${gparts.length} partes…`);
+  }
+  const ww = await whisperJob, out = [], diag = [];
+  gparts.forEach(([a, b], i) => {   // alinha cada parte só com as palavras do whisper-1 do mesmo trecho
+    const t0 = a / sr, t1 = b / sr, wp = ww.filter(w => (w.s + w.e) / 2 >= t0 && (w.s + w.e) / 2 < t1);
+    const toks = (texts[i] || '').trim().split(/\s+/).filter(Boolean);
+    diag.push(`parte ${i + 1}: gpt ${toks.length} / whisper ${wp.length} palavras`);
+  });
+  const all = texts.join(' ').trim().split(/\s+/).filter(Boolean);
+  out.push(...(all.length ? align(all, ww) : ww));   // alinhamento único: palavras que mudaram de parte na emenda continuam no lugar certo
+  console.log('[legendas] ' + diag.join(' · '));
+  window.gptDiag = diag.join('\n') + (window.gptRaw.length ? '\nrespostas vazias: ' + window.gptRaw.slice(0, 3).join(' | ') : '');
+  return out;
+}
+$('go').onclick = async () => {
+  if (!file) return status('Escolha um arquivo primeiro.', 1);
+  $('go').disabled = true; $('bar').style.display = 'none'; spent = {w: 0, g: 0, q: 0, s: 0}; window.gptDiag = '';
+  try {
+    if ($('engine').value !== 'local') words = await cloud($('engine').value);
+    else {
+      if (!$('lang').value) throw new Error('No Whisper local, escolha o idioma do áudio no item 1. Sem isso ele costuma sair traduzido para o inglês.');
+      const mdirOk = await checkModelDir();
+      status('Decodificando áudio…');
+      const audio = await decode(file), gpu = !!navigator.gpu;
+      let opt = $('model').selectedOptions[0];
+      if (!gpu && opt.value.includes('turbo')) { opt = [...$('model').options].find(o => o.value.includes('small')); status('Sem WebGPU: usando o modelo Small.'); }
+      const turbo = opt.value.includes('turbo');
+      const dtype = gpu ? {encoder_model: turbo ? 'fp16' : 'fp32', decoder_model_merged: 'q4'} : 'q8';
+      const o = {model: opt.value, device: gpu ? 'webgpu' : 'wasm', dtype, language: $('lang').value, word: opt.dataset.word === '1', parts: plan(audio), dir: mdirOk};
+      status('Carregando biblioteca do Whisper…');
+      try { await import(TJS); } catch (e) { throw new Error('Não consegui baixar a biblioteca do jsDelivr (' + (e.message || e) + '). Verifique a internet, VPN ou bloqueador de anúncios e tente de novo.'); }
+      let chunks;
+      try { chunks = await runLocal(audio, o); }
+      catch (e) {
+        if (!e.message.startsWith('worker:')) throw e;
+        status('Worker indisponível (' + e.message.slice(7) + '). Rodando na página principal; ela pode ficar sem responder.');
+        chunks = await runMain(audio, o);
+      }
+      words = toWords(chunks);
+    }
+    if (!words.length) throw new Error('Nenhuma fala detectada.');
+    words = fixDashes(sanitize(words)); const dp = dedupe(words); words = dp.ws;
+    const paid = spent.w / 60 * PRICE.whisper + spent.g / 60 * PRICE.gpt + spent.q / 60 * PRICE.groq + spent.s / 60 * PRICE.scribe;
+    build(); status(`Pronto: ${cues.length} legendas.` + (paid ? ` Custo desta transcrição: ${usd(paid)}.` : '') + ($('engine').value === 'groq' && groqFixed ? ` ${groqFixed} trecho(s) refeito(s) por virem quebrados da Groq.` : '') + (dp.removed ? ` ${dp.removed} palavras repetidas foram removidas.` : '')); $('bar').style.display = 'none';
+  } catch (e) { status('Erro: ' + e.message, 1); }
+  $('go').disabled = false;
+};
+
+/* ---------- Interface ---------- */
+let curProv = null;
+function useProv(p) {   // mostra a chave do fornecedor do motor escolhido
+  if (curProv) keys[curProv] = $('key').value;
+  curProv = p; const P = PROV[p]; let stored = null;
+  try { stored = localStorage.getItem(P.store); } catch (e) {}
+  $('key').value = keys[p] ?? stored ?? ''; $('remember').checked = !!stored;
+  $('keyName').textContent = P.name; $('keyTip').dataset.tip = P.tip; $('key').placeholder = P.ph;
+}
+const saveKey = () => { const st = PROV[curProv].store; try { if ($('remember').checked && $('key').value.trim()) localStorage.setItem(st, $('key').value.trim()); else localStorage.removeItem(st); } catch (e) {} };
+$('remember').onchange = saveKey; $('key').addEventListener('input', () => { keys[curProv] = $('key').value; if ($('remember').checked) saveKey(); });
+const CTXTIP = {
+  gpt: 'Liste nomes de pessoas, lugares, marcas e termos técnicos com a grafia certa. O gpt-transcribe usa isso para escrever do jeito certo.\n\nNeste modo o texto vem do gpt-transcribe e os tempos vêm do whisper-1, alinhados palavra por palavra.',
+  groq: 'Liste nomes de pessoas, lugares, marcas e termos técnicos com a grafia certa, no idioma do áudio. O Whisper usa isso como pista de escrita (até cerca de 200 palavras).',
+  scribe: 'Separe os termos por vírgula (nomes, marcas, gírias). Cada termo pode ter até 5 palavras. O Scribe dá preferência a essas grafias. Usar termos custa 20% a mais.'
+};
+$('ctx').addEventListener('input', showCost);
+(() => {   // balão de ajuda dos "?"
+  const box = $('tipbox');
+  const show = el => {
+    box.textContent = el.dataset.tip; box.classList.add('on');
+    const r = el.getBoundingClientRect(), b = box.getBoundingClientRect();
+    let x = r.left + r.width / 2 - b.width / 2, y = r.top - b.height - 8;
+    x = Math.max(8, Math.min(x, innerWidth - b.width - 8)); if (y < 8) y = r.bottom + 8;
+    box.style.left = x + 'px'; box.style.top = y + 'px';
+  };
+  const hide = () => box.classList.remove('on');
+  document.addEventListener('mouseover', e => { const t = e.target.closest('.tip'); if (t) show(t); });
+  document.addEventListener('mouseout', e => { if (e.target.closest('.tip')) hide(); });
+  document.addEventListener('focusin', e => { const t = e.target.closest('.tip'); t ? show(t) : hide(); });
+  document.addEventListener('focusout', hide);
+  addEventListener('scroll', hide, true);
+})();
+function useFile(f) {
+  if (!f) return; file = f;
+  $('player').src = URL.createObjectURL(file);
+  $('finfo').textContent = `${file.name} · ${(file.size / 1048576).toFixed(1)} MB`; $('finfo').classList.add('loaded');
+}
+$('file').onchange = e => useFile(e.target.files[0]);
+$('fbtn').onclick = e => { e.stopPropagation(); $('file').click(); };
+$('drop').onclick = () => $('file').click();
+['dragenter', 'dragover'].forEach(t => $('drop').addEventListener(t, e => { e.preventDefault(); $('drop').classList.add('over'); }));
+['dragleave', 'drop'].forEach(t => $('drop').addEventListener(t, e => { e.preventDefault(); $('drop').classList.remove('over'); }));
+$('drop').addEventListener('drop', e => { const f = e.dataTransfer.files[0]; if (!f) return; if (/^(audio|video)\//.test(f.type) || /\.(mp3|wav|m4a|aac|ogg|opus|flac|mp4|mkv|mov|webm|avi)$/i.test(f.name)) useFile(f); else { $('finfo').textContent = 'Esse arquivo não parece ser áudio ou vídeo.'; $('finfo').classList.remove('loaded'); } });
+addEventListener('dragover', e => e.preventDefault()); addEventListener('drop', e => { if (!e.target.closest('#drop')) e.preventDefault(); });   // soltar fora da caixa não abre o arquivo no navegador
+$('player').addEventListener('loadedmetadata', () => { durSec = isFinite($('player').duration) ? $('player').duration : 0; showCost(); });
+$('engine').onchange = () => {
+  showCost(); const v = $('engine').value; $('localBox').hidden = v !== 'local'; $('cloudBox').hidden = v === 'local';
+  $('ctxBox').hidden = !CTXTIP[v]; if (CTXTIP[v]) $('ctxTip').dataset.tip = CTXTIP[v];
+  $('evBox').hidden = v !== 'scribe';
+  if (v !== 'local') useProv(provOf(v));
+};
+$('engine').onchange();
+$('cues').addEventListener('input', e => { const x = cues[+e.target.closest('.cue')?.dataset.i]; if (x) x.edited = true; });
+if (window.showDirectoryPicker) {
+  $('pickm').onclick = pickM; $('resetm').onclick = () => { mdir = null; kv('set', 'modeldir', null).catch(() => {}); showM(); };
+  kv('get', 'modeldir').then(d => { mdir = d || null; showM(); }).catch(() => {});
+} else $('mrow').hidden = true;
+if (navigator.gpu) $('gpuinfo').textContent = 'WebGPU disponível neste navegador.';
+else { $('model').selectedIndex = 1; $('gpuinfo').textContent = 'Sem WebGPU: usa a CPU (mais lento) e o Turbo fica indisponível.'; }
+</script>
+</body>
+</html>
