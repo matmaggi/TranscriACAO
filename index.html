@@ -56,7 +56,7 @@ audio{width:100%}
 .cue .btns{grid-area:btns;display:grid;grid-template-columns:1fr 1fr;gap:5px;align-content:start}
 .cue .btns button{padding:5px 6px;font-size:12.5px;background:var(--blue);border-color:var(--blue);color:#fff}
 .cue .btns button:hover{filter:brightness(1.1)}
-.bar button{background:var(--ac);border-color:var(--ac);color:var(--acf)}
+.bar button{background:var(--ac);border-color:var(--ac);color:var(--acf);padding:3px 10px;font-size:13.5px;line-height:1.3}
 .bar button:hover{filter:brightness(1.1)}
 @media(max-width:860px){.cue{grid-template-columns:30px 1fr;grid-template-areas:'n tt' 'txt txt' 'meta meta' 'btns btns';justify-content:stretch}.cue .btns{grid-template-columns:repeat(4,1fr)}}
 #cost{font-size:13px;margin-top:8px;color:var(--fg)}
@@ -68,13 +68,12 @@ audio{width:100%}
 [hidden]{display:none!important}
 main>.card:not(.full) .tip{float:right;margin-top:2px}
 main>.card:not(.full) .chk .tip{float:none;margin:0 0 0 auto}
-.filepick{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-width:0;border:2px dashed var(--ac);border-radius:10px;padding:12px 10px;background:color-mix(in srgb,var(--green) 20%,var(--card));text-align:center;transition:border-color .15s,background .15s;cursor:pointer}
-.filepick.over{background:color-mix(in srgb,var(--green) 42%,var(--card))}
-.filepick button{padding:3px 12px;font-size:13.5px}
-.filepick .dz{font-size:13px;color:var(--mut)}
-.filepick .ic{font-size:26px;line-height:1;color:var(--ac)}
+.filepick{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;border:2px dashed var(--green);border-radius:10px;padding:12px 14px;background:var(--card);text-align:center;transition:border-color .15s,background .15s;cursor:pointer}
+.filepick.over{border-color:var(--green);background:color-mix(in srgb,var(--green) 22%,var(--card))}
+.filepick .dz{font-weight:700;font-size:14.5px;color:var(--tx)}
+.filepick #finfo{margin:0;font-size:13px;color:var(--mut);overflow-wrap:anywhere}
+.filepick #finfo.loaded{font-weight:600;color:var(--tx)}
 .just{text-align:justify}
-#finfo.loaded{font-weight:700;text-align:center;color:var(--tx);overflow-wrap:anywhere}
 .filepick span{font-size:13px;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 #ctx{font-size:12px;line-height:1.35}
 .pl{position:sticky;top:0;z-index:5;background:var(--t3);padding:8px 0 4px;margin-top:-8px}
@@ -102,9 +101,8 @@ footer.ft a{color:var(--ac);font-weight:600;text-decoration:underline;text-under
 <main>
   <div class="card">
     <h2>1. Arquivo</h2>
-    <div class="filepick" id="drop"><div class="dz">Arraste o arquivo para cá<br>ou</div><button type="button" id="fbtn">Escolher arquivo</button></div>
+    <div class="filepick" id="drop" role="button" tabindex="0" aria-label="Escolher arquivo de áudio ou vídeo"><div class="dz">Clique aqui ou arraste o arquivo</div><p id="finfo">Nenhum arquivo escolhido<br>(áudio ou vídeo)</p></div>
     <input type="file" id="file" accept="audio/*,video/*" hidden>
-    <p class="hint" id="finfo">Aceita MP3, WAV, M4A, MP4, MKV e o que o navegador conseguir abrir.</p>
     <p class="hint just">Se for um vídeo, só o áudio é usado. Vídeos muito grandes (acima de ~1 GB) podem precisar ser convertidos para áudio antes, exceto no ElevenLabs Scribe, que aceita o vídeo direto. <span class="tip" tabindex="0" data-tip="Como converter com o VLC (grátis, videolan.org):&#10;1. Menu Mídia → Converter/Salvar.&#10;2. Clique em Adicionar, escolha o vídeo e clique em Converter/Salvar.&#10;3. Em Perfil, escolha &quot;Audio - MP3&quot;.&#10;4. Em Arquivo de destino, clique em Procurar e dê um nome terminado em .mp3.&#10;5. Clique em Iniciar e carregue o MP3 aqui.&#10;&#10;Um episódio de 20 min vira cerca de 20 a 50 MB.">?</span></p>
     <div class="grow"></div>
     <label for="lang">Idioma do áudio <span class="tip" tabindex="0" data-tip="Escolher o idioma evita erros de detecção, principalmente quando o áudio começa com música, ruído ou silêncio.">?</span></label>
@@ -986,8 +984,8 @@ function useFile(f) {
   $('finfo').textContent = `${file.name} · ${(file.size / 1048576).toFixed(1)} MB`; $('finfo').classList.add('loaded');
 }
 $('file').onchange = e => useFile(e.target.files[0]);
-$('fbtn').onclick = e => { e.stopPropagation(); $('file').click(); };
 $('drop').onclick = () => $('file').click();
+$('drop').onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('file').click(); } };
 ['dragenter', 'dragover'].forEach(t => $('drop').addEventListener(t, e => { e.preventDefault(); $('drop').classList.add('over'); }));
 ['dragleave', 'drop'].forEach(t => $('drop').addEventListener(t, e => { e.preventDefault(); $('drop').classList.remove('over'); }));
 $('drop').addEventListener('drop', e => { const f = e.dataTransfer.files[0]; if (!f) return; if (/^(audio|video)\//.test(f.type) || /\.(mp3|wav|m4a|aac|ogg|opus|flac|mp4|mkv|mov|webm|avi)$/i.test(f.name)) useFile(f); else { $('finfo').textContent = 'Esse arquivo não parece ser áudio ou vídeo.'; $('finfo').classList.remove('loaded'); } });
