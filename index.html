@@ -45,7 +45,8 @@ button:disabled{opacity:.5;cursor:wait}
 audio{width:100%}
 .bar{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
 .bar .sp{flex:1}.bar .tip{align-self:center}
-.cue{display:grid;grid-template-columns:30px 122px minmax(0,1fr) 150px;grid-template-areas:'n tt txt btns' '. . meta btns';justify-content:center;gap:6px 14px;padding:12px 0;border-top:1px solid var(--bd);align-items:start}
+.tip.kb{width:auto;height:18px;border-radius:9px;padding:0 8px;font-size:11.5px}
+.cue{display:grid;grid-template-columns:30px 122px minmax(0,1fr) 132px;grid-template-areas:'n tt txt btns' '. . meta btns';justify-content:center;gap:6px 14px;padding:12px 0;border-top:1px solid var(--bd);align-items:start}
 .cue.now{background:var(--now);margin:0 -16px;padding:10px 16px}
 .cue .n{grid-area:n;color:var(--mut);font-size:13px;padding-top:7px;text-align:right}
 .cue .tt{grid-area:tt}
@@ -53,12 +54,34 @@ audio{width:100%}
 .cue textarea{text-align:center;background:var(--card);grid-area:txt;resize:vertical;min-height:54px;line-height:1.35;font-size:16px}
 .cue .meta{grid-area:meta;justify-content:center;font-size:12.5px;display:flex;flex-wrap:wrap;gap:4px 12px;color:var(--mut)}
 .cue .meta .bad{color:var(--bad);font-weight:600}.cue .meta .ok{color:var(--ok)}
-.cue .btns{grid-area:btns;display:grid;grid-template-columns:1fr 1fr;gap:5px;align-content:start}
-.cue .btns button{padding:5px 6px;font-size:12.5px;background:var(--blue);border-color:var(--blue);color:#fff}
-.cue .btns button:hover{filter:brightness(1.1)}
+.cue .btns{grid-area:btns;display:flex;gap:4px;justify-content:flex-end;align-items:flex-start;opacity:.45;transition:opacity .12s}
+.cue:hover .btns,.cue:focus-within .btns,.cue.sel .btns{opacity:1}
+@media (hover:none){.cue .btns{opacity:1}}
+.cue .btns button{width:30px;height:28px;padding:0;font-size:14px;line-height:1;background:var(--card);border-color:var(--bd);color:var(--tx)}
+.cue .btns button:hover{border-color:var(--ac)}
+.cue .btns button.del:hover{border-color:var(--err);color:var(--err)}
+.cue.sel{box-shadow:inset 3px 0 0 var(--ac)}
+.cue .meta .cpsw{color:var(--warn);font-weight:600}
+#sum .c{color:var(--warn)}
+.wavewrap{margin-top:6px}
+#wave{display:block;width:100%;height:96px;border:1px solid var(--bd);border-radius:8px;background:var(--card);cursor:crosshair;touch-action:none}
+.wavebar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 12px;margin-top:4px;font-size:12.5px;color:var(--mut)}
+.wavebar input[type=range]{width:130px;accent-color:var(--ac);padding:0;border:0;background:none}
+#wavemsg{margin:6px 0 0}
+#wavemsg button{padding:3px 10px;font-size:13px}
+.saved{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;margin:0 0 10px;padding:8px 12px;background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--amber);border-radius:10px;font-size:13.5px}
+.saved button{padding:3px 10px;font-size:13px}
+#cancel{width:100%;margin-top:8px;color:var(--err);border-color:var(--err);font-weight:600}
+dialog#redo{max-width:460px;border:1px solid var(--bd);border-top:4px solid var(--blue);border-radius:12px;background:var(--card);color:var(--tx);padding:20px}
+dialog#redo::backdrop{background:#0008}
+dialog#redo h3{margin:0 0 8px;font:700 1.1rem/1.25 var(--disp)}
+dialog#redo p{margin:0 0 14px;font-size:14px;text-align:justify;hyphens:none}
+dialog#redo .acts{display:flex;flex-direction:column;gap:8px}
+dialog#redo .acts button{padding:8px 12px}
+dialog#redo .acts .keep{background:var(--ac);border-color:var(--ac);color:var(--acf);font-weight:600}
 .bar button{background:var(--ac);border-color:var(--ac);color:var(--acf);padding:3px 10px;font-size:13.5px;line-height:1.3}
 .bar button:hover{filter:brightness(1.1)}
-@media(max-width:860px){.cue{grid-template-columns:30px 1fr;grid-template-areas:'n tt' 'txt txt' 'meta meta' 'btns btns';justify-content:stretch}.cue .btns{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:860px){.cue{grid-template-columns:30px 1fr;grid-template-areas:'n tt' 'txt txt' 'meta meta' 'btns btns';justify-content:stretch}.cue .btns{justify-content:center}}
 #cost{font-size:13px;margin-top:8px;color:var(--fg)}
 .chk{display:flex;align-items:center;gap:5px;font-size:12px;white-space:nowrap;color:var(--mut);margin-top:6px}.chk input{width:auto;margin:0}
 .empty{color:var(--mut);padding:26px 0;text-align:center;font-size:12.5px;white-space:nowrap}
@@ -77,7 +100,7 @@ main>.card:not(.full) .chk .tip{float:none;margin:0 0 0 auto}
 .filepick span{font-size:13px;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 #ctx{font-size:12px;line-height:1.35}
 .pl{position:sticky;top:0;z-index:5;background:var(--t3);padding:8px 0 4px;margin-top:-8px}
-.cue{scroll-margin-top:80px}
+.cue{scroll-margin-top:200px}
 /* ===== identidade da família ===== */
 .fh{text-align:center;padding-top:26px;padding-bottom:18px}
 .fh .brand{display:flex;align-items:center;justify-content:center;gap:12px;margin:0 0 6px}
@@ -88,14 +111,28 @@ main>.card:not(.full) .chk .tip{float:none;margin:0 0 0 auto}
 .logo-bg{fill:var(--ac)}.logo-fg{fill:var(--onac)}
 .logo-st{fill:none;stroke:var(--onac);stroke-linecap:round;stroke-linejoin:round}
 footer.ft{text-align:center;color:var(--mut);font-size:.9rem;line-height:1.5;padding-top:28px;padding-bottom:32px}
-footer.ft p{margin:0}
+footer.ft p{margin:0}footer.ft p+p{margin-top:6px}
 footer.ft a{color:var(--ac);font-weight:600;text-decoration:underline;text-underline-offset:3px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ===== balão de ajuda (README) ===== */
+.fh .brand{position:relative}
+.ajuda{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--ac);color:var(--onac);font:700 15px/1 var(--sys);cursor:help;flex:none;align-self:center;user-select:none}
+.ajuda-box{position:absolute;top:100%;left:50%;transform:translateX(-50%);z-index:100;width:800px;max-width:calc(100vw - 32px);max-height:75vh;overflow:auto;margin-top:8px;padding:18px 24px;background:var(--card);color:var(--tx);border:1px solid var(--bd);border-top:4px solid var(--ac);border-radius:12px;box-shadow:0 14px 36px rgba(0,0,0,.25);font:400 14px/1.55 var(--sys);text-align:justify;hyphens:none;-webkit-hyphens:none;word-break:normal;overflow-wrap:normal;cursor:auto;visibility:hidden;opacity:0;transition:opacity .12s ease .3s,visibility 0s linear .42s!important}
+.ajuda:hover .ajuda-box,.ajuda:focus .ajuda-box,.ajuda:focus-within .ajuda-box,.ajuda-box:hover{visibility:visible;opacity:1;transition:opacity .12s ease 0s,visibility 0s linear 0s!important}
+.ajuda-box h2{font:800 1.3rem/1.2 var(--disp);margin:0 0 6px;text-align:left}
+.ajuda-box h3{font:700 1.05rem/1.25 var(--disp);margin:16px 0 4px;text-align:left}
+.ajuda-box h4{font:700 .95rem/1.3 var(--sys);margin:12px 0 2px;text-align:left}
+.ajuda-box p{margin:6px 0}
+.ajuda-box ul{margin:4px 0;padding-left:22px}
+.ajuda-box li{margin:3px 0}
+/* ===== PIX ===== */
+.pix{user-select:all;-webkit-user-select:all;cursor:pointer;color:var(--tx);overflow-wrap:anywhere}
 </style>
 </head>
 <body>
 <header class="fh">
-  <div class="brand"><svg viewBox="0 0 64 64" aria-hidden="true"><rect class="logo-bg" width="64" height="64" rx="16"/><rect class="logo-fg" x="26" y="8" width="12" height="23" rx="6"/><path class="logo-st" d="M19.5 26a12.5 12.5 0 0 0 25 0M32 38.5V43" stroke-width="3.5"/><rect class="logo-fg" x="12" y="48" width="40" height="5" rx="2.5"/><rect class="logo-fg" x="20" y="56" width="24" height="4" rx="2"/></svg><h1>TranscriAÇÃO</h1></div>
+  <div class="brand"><svg viewBox="0 0 64 64" aria-hidden="true"><rect class="logo-bg" width="64" height="64" rx="16"/><rect class="logo-fg" x="26" y="8" width="12" height="23" rx="6"/><path class="logo-st" d="M19.5 26a12.5 12.5 0 0 0 25 0M32 38.5V43" stroke-width="3.5"/><rect class="logo-fg" x="12" y="48" width="40" height="5" rx="2.5"/><rect class="logo-fg" x="20" y="56" width="24" height="4" rx="2"/></svg><h1>TranscriAÇÃO</h1><span class="ajuda" tabindex="0" role="button" aria-label="Sobre o TranscriAÇÃO">?<div class="ajuda-box" role="tooltip"><h2>TranscriAÇÃO</h2><p><b>Transcreva áudio ou vídeo e gere legendas prontas, seguindo as suas regras de legendagem.</b></p><p>O TranscriAÇÃO transforma o áudio de um arquivo em legendas com tempo, quebras de linha e duração já ajustados. Dá para usar serviços online ou rodar o Whisper direto no seu computador, de graça.</p><h3>Funcionalidades</h3><h4>Arquivo</h4><ul><li>Aceita arquivos de áudio ou vídeo (de vídeo, só o áudio é usado).</li><li>Mais de 40 idiomas, com detecção automática do idioma do áudio.</li></ul><h4>Motores de transcrição</h4><ul><li><b>ElevenLabs Scribe v3</b> (recomendado; aceita vídeos grandes diretamente).</li><li><b>Groq:</b> Whisper large-v3 (refaz automaticamente os trechos que voltam sem pontuação).</li><li><b>OpenAI:</b> whisper-1, ou gpt-transcribe + whisper-1.</li><li><b>Local (no seu PC):</b> Whisper large-v3, sem custo e sem enviar nada para a internet.<ul><li>Modelos: Large-v3 Turbo (melhor texto, ~800 MB), Small (tempos por palavra, ~250 MB), Base (rápido, ~100 MB) e Tiny (rascunho, ~40 MB).</li><li>Usa a placa de vídeo (WebGPU) quando disponível; sem ela, usa o processador.</li><li>O modelo é baixado só na primeira vez e pode ficar no cache do navegador ou numa pasta escolhida por você.</li><li>A biblioteca do Whisper roda isolada num <i>worker</i>, sem acesso às chaves de API guardadas no navegador.</li></ul></li><li>Custo estimado exibido antes de transcrever, com a data dos preços de referência.</li><li><b>Cancelar</b> a transcrição a qualquer momento (o que já foi enviado aos serviços pode ser cobrado).</li><li>Arquivos em formatos que a OpenAI e a Groq não aceitam (MKV, AVI, MOV…) são convertidos no navegador antes do envio.</li><li>Campo de <b>contexto</b> opcional (nomes, termos, assunto) para melhorar a transcrição.</li><li>Opção de <b>marcar sons</b> (risos, aplausos…).</li></ul><h4>Regras de legenda (editáveis)</h4><ul><li>Caracteres por linha</li><li>Meta de caracteres por segundo</li><li>Duração mínima e máxima</li><li>Linhas por legenda</li><li>Intervalo mínimo entre legendas</li><li>Quebrar em pausas a partir de X segundos</li><li>Tempo extra no fim da legenda</li></ul><p>As quebras de linha evitam separar artigos, preposições e pronomes da palavra seguinte, e frases novas sempre começam no início de uma linha.</p><h4>Edição</h4><ul><li>Lista de legendas com texto e tempos editáveis, com botões compactos para ouvir, dividir, unir e excluir.</li><li>Avisos em vermelho para o que está fora das regras. A velocidade de leitura (car./s) aparece em cada legenda e, acima da meta, vira um alerta à parte, em laranja, que não conta como erro.</li><li><b>Onda sonora</b> do áudio, com as legendas desenhadas por cima: clique para ir ao ponto, arraste as bordas de uma legenda para ajustar entrada e saída, use a roda do mouse para rolar e o zoom para ver de 4 a 60 segundos.</li><li><b>Atalhos de teclado</b> (Alt = Option no Mac): Alt+P tocar/pausar, Alt+R ouvir a legenda, Alt+I e Alt+O marcar início e fim no tempo atual, Alt+S dividir no tempo atual, Alt+U unir com a próxima, Alt+↑/↓ legenda anterior/próxima, Alt+J/L voltar/avançar 2 s.</li><li><b>Refazer legendas</b> com as regras atuais, escolhendo entre manter suas edições ou voltar à transcrição original.</li><li><b>↩ Desfazer</b> até 100 passos (também com Ctrl+Z fora dos campos de texto).</li><li><b>Salvamento automático:</b> a transcrição e as edições ficam guardadas no navegador. Ao abrir a página de novo, ela oferece restaurar o trabalho.</li></ul><h4>Exportação</h4><p>SRT, VTT, TTML e TXT.</p><h3>Privacidade</h3><p>No modo local, nada sai do seu computador. Nos serviços online, o áudio é enviado apenas para o serviço escolhido. A chave de API só fica guardada no navegador se você marcar essa opção. O salvamento automático guarda a transcrição só neste navegador.</p></div></span></div>
   <p class="sub">Transcreva áudio ou vídeo e crie legendas.</p>
 </header>
 <main>
@@ -132,7 +169,7 @@ footer.ft a{color:var(--ac);font-weight:600;text-decoration:underline;text-under
 
   <div class="card">
     <h2>3. Transcrição</h2>
-    <label for="engine">Motor <span class="tip" tabindex="0" data-tip="ElevenLabs Scribe v3 (recomendado): o melhor texto nos testes, em português e inglês, com tempo por palavra. Identifica quem fala (vira o hífen de diálogo) e marca sons como risos. Precisa de uma chave da ElevenLabs.&#10;&#10;Groq, Whisper large-v3: texto no nível do whisper-1, por cerca de 1/3 do preço. Precisa de uma chave da Groq.&#10;&#10;OpenAI whisper-1: fiel ao que foi falado, com tempo por palavra. Será desligado pela OpenAI em fev/2027.&#10;&#10;OpenAI gpt-transcribe + whisper-1: acerta mais nomes e termos em narração e fala limpa, mas em conversas cruzadas pode trocar ou pular falas. Cobra as duas transcrições.&#10;&#10;Local (PC): grátis e o áudio não sai do computador, mas o texto e a sincronia são mais fracos. Bom para rascunho.">?</span></label>
+    <label for="engine">Motor <span class="tip" tabindex="0" id="engineTip" data-tip="ElevenLabs Scribe v3 (recomendado): o melhor texto nos testes, em português e inglês, com tempo por palavra. Identifica quem fala (vira o hífen de diálogo) e marca sons como risos. Precisa de uma chave da ElevenLabs.&#10;&#10;Groq, Whisper large-v3: texto no nível do whisper-1, por cerca de 1/3 do preço. Precisa de uma chave da Groq.&#10;&#10;OpenAI whisper-1: fiel ao que foi falado, com tempo por palavra. {W1FIM}&#10;&#10;OpenAI gpt-transcribe + whisper-1: acerta mais nomes e termos em narração e fala limpa, mas em conversas cruzadas pode trocar ou pular falas. Cobra as duas transcrições.&#10;&#10;Local (PC): grátis e o áudio não sai do computador, mas o texto e a sincronia são mais fracos. Bom para rascunho.">?</span></label>
     <select id="engine">
       <option value="scribe">ElevenLabs: Scribe v3 (recomendado)</option>
       <option value="groq">Groq: Whisper large-v3</option>
@@ -164,17 +201,24 @@ footer.ft a{color:var(--ac);font-weight:600;text-decoration:underline;text-under
     <div class="grow"></div>
     <div id="cost"></div>
     <button class="pri" id="go">Gerar legendas</button>
+    <button id="cancel" hidden>Cancelar</button>
     <progress id="bar" max="100" value="0"></progress>
     <div id="st"></div>
   </div>
 
   <div class="card full">
-    <div class="pl"><audio id="player" controls></audio></div>
+    <div id="saved" class="saved" hidden></div>
+    <div class="pl"><audio id="player" controls></audio>
+      <div class="wavewrap" id="wavewrap" hidden><canvas id="wave" aria-label="Onda sonora: clique para ir ao ponto; arraste as bordas das legendas para ajustar os tempos"></canvas>
+        <div class="wavebar"><span>Clique para ir ao ponto · arraste as bordas de uma legenda para ajustar o tempo · roda do mouse para rolar</span>
+          <label class="chk" style="margin:0">Zoom <input type="range" id="zoom" min="4" max="60" value="16" aria-label="Segundos visíveis"> <span id="zoomv">16 s</span></label></div></div>
+      <p class="hint" id="wavemsg"></p>
+    </div>
     <div class="bar">
-      <button id="regen">Regerar do zero</button>
-      <button id="apply">Reaplicar regras ao texto atual</button>
-      <button id="undo">Desfazer</button>
-      <span class="tip" tabindex="0" data-tip="Regerar do zero: refaz tudo a partir da transcrição original. Suas edições são descartadas.&#10;&#10;Reaplicar regras: mantém o texto que você editou e refaz a divisão, as quebras de linha e os tempos com as regras atuais.&#10;&#10;Desfazer: volta ao estado anterior à última regeneração.">?</span>
+      <button id="redoBtn">Refazer legendas…</button>
+      <button id="undo" disabled title="Desfazer a última alteração (Ctrl+Z fora dos campos de texto)" aria-label="Desfazer">↩</button>
+      <span class="tip" tabindex="0" data-tip="Refazer legendas: refaz a divisão, as quebras de linha e os tempos com as regras atuais. Você escolhe se mantém suas edições de texto ou se volta à transcrição original.&#10;&#10;↩ Desfazer: volta um passo (edições, divisões, uniões, exclusões, ajustes de tempo e refazer). Guarda até 100 passos.">?</span>
+      <span class="tip kb" tabindex="0" data-tip="Atalhos (Alt = Option no Mac), funcionam também dentro dos campos:&#10;Alt+P: tocar/pausar&#10;Alt+R: ouvir a legenda selecionada&#10;Alt+I: início da legenda no tempo atual do áudio&#10;Alt+O: fim da legenda no tempo atual do áudio&#10;Alt+S: dividir a legenda no tempo atual (no texto, divide onde está o cursor)&#10;Alt+U: unir com a próxima&#10;Alt+↑ / Alt+↓: legenda anterior / próxima&#10;Alt+J / Alt+L: voltar / avançar 2 s&#10;Ctrl+Z (fora dos campos de texto): desfazer">Atalhos</span>
       <span class="sp"></span>
       <span class="tip" tabindex="0" data-tip="SRT: o formato mais comum, aceito por quase todo player e editor.&#10;VTT: para web e YouTube.&#10;TTML: exigido por algumas plataformas de streaming.&#10;TXT: só o texto, sem tempos.">?</span>
       <button data-x="srt">SRT</button><button data-x="vtt">VTT</button><button data-x="ttml">TTML</button><button data-x="txt">TXT</button>
@@ -183,10 +227,22 @@ footer.ft a{color:var(--ac);font-weight:600;text-decoration:underline;text-under
     <div id="cues"><div class="empty">As legendas aparecem aqui depois da transcrição. Edite o texto e os tempos direto na lista; os avisos em vermelho mostram o que está fora das regras.</div></div>
   </div>
 </main>
-<footer class="ft"><p>Veja mais ferramentas úteis para legendagem clicando <a href="https://matmaggi.github.io/subtools/">aqui</a>.</p></footer>
+<footer class="ft"><p>Veja mais ferramentas úteis para legendagem clicando <a href="https://matmaggi.github.io/subtools/">aqui</a>.</p><p>Achou a ferramenta útil? Faz um PIX! <b class="pix" title="Clique para selecionar a chave PIX">5a08fa27-b8f4-4935-9857-6b03fb63248a</b></p></footer>
 <div id="tipbox" role="tooltip"></div>
+<dialog id="redo">
+  <h3>Refazer legendas</h3>
+  <p>A divisão, as quebras de linha e os tempos serão refeitos com as regras atuais. Manter as suas edições?</p>
+  <div class="acts">
+    <button class="keep" data-r="keep">Manter minhas edições</button>
+    <button data-r="zero">Descartar edições e refazer da transcrição original</button>
+    <button data-r="no">Cancelar</button>
+  </div>
+</dialog>
 
 <script>
+/* Biblioteca do Whisper local. Ela só é carregada dentro de um worker isolado (sem acesso às chaves de API
+   guardadas no navegador) e nunca na página. Para não depender do CDN, baixe o arquivo para o seu repositório
+   e troque este endereço pelo caminho local. */
 const TJS = 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.5.1';
 function makeCache(dir) {   // cache de modelos numa pasta escolhida pelo usuário
   const nm = r => encodeURIComponent(typeof r === 'string' ? r : r.url);
@@ -450,42 +506,55 @@ function check(i) {
   if (d < c.mind - .005) iss.push('duração curta');
   if (d > c.maxd + .005) iss.push('duração longa');
   if (p && x.start - p.end < c.gap - .002) iss.push('intervalo menor que o mínimo');
-  return {iss, d, chars, lens: lines.map(l => l.length).join('+')};
+  const cps = chars / Math.max(.01, d), fast = c.cps > 0 && cps > c.cps + .05;   // meta de leitura: aviso à parte (a transcrição fiel costuma passar dela)
+  return {iss, d, chars, cps, fast, lens: lines.map(l => l.length).join('+')};
 }
 function meta(i) {
   const m = check(i), el = $('cues').children[i]?.querySelector('.meta'); if (!el) return;
   el.innerHTML = `<span>${m.d.toFixed(2)} s</span><span>${m.lens} car.</span>` +
+    `<span${m.fast ? ' class="cpsw" title="Acima da meta de caracteres por segundo. É só um alerta: a transcrição fiel costuma passar da meta."' : ''}>${m.cps.toFixed(1).replace('.', ',')} car./s${m.fast ? ' (acima da meta)' : ''}</span>` +
     (m.iss.length ? m.iss.map(t => `<span class="bad">${t}</span>`).join('') : '<span class="ok">dentro do padrão</span>');
 }
 function summary() {
   if (!cues.length) { $('sum').textContent = ''; return; }
-  let bad = 0; cues.forEach((_, i) => { if (check(i).iss.length) bad++; });
-  $('sum').innerHTML = `${cues.length} legendas · ${bad ? '<span class="w">' + bad + ' com avisos</span>' : '<span class="k">todas dentro do padrão</span>'}`;
+  let bad = 0, fast = 0; cues.forEach((_, i) => { const m = check(i); if (m.iss.length) bad++; if (m.fast) fast++; });
+  $('sum').innerHTML = `${cues.length} legendas · ${bad ? '<span class="w">' + bad + ' com avisos</span>' : '<span class="k">todas dentro do padrão</span>'}` +
+    (fast ? ` · <span class="c">${fast} acima da meta de car./s</span>` : '');
 }
 function render() {
   const L = $('cues');
-  if (!cues.length) { L.innerHTML = '<div class="empty">Nenhuma legenda gerada.</div>'; summary(); return; }
+  if (!cues.length) { L.innerHTML = '<div class="empty">Nenhuma legenda gerada.</div>'; summary(); drawWave(); return; }
   L.innerHTML = cues.map((x, i) => `<div class="cue" data-i="${i}"><div class="n">${i + 1}</div>
     <div class="tt"><input class="s" aria-label="Início" value="${ts(x.start, '.')}"><input class="e" aria-label="Fim" value="${ts(x.end, '.')}"></div>
     <textarea rows="2" aria-label="Texto">${esc(x.text)}</textarea><div class="meta"></div>
-    <div class="btns"><button data-a="seek">Ouvir</button><button data-a="split">Dividir</button><button data-a="merge">Unir</button><button data-a="del">Excluir</button></div></div>`).join('');
-  cues.forEach((_, i) => meta(i)); summary();
+    <div class="btns"><button data-a="seek" title="Ouvir (Alt+R)" aria-label="Ouvir">▶</button><button data-a="split" title="Dividir" aria-label="Dividir">✂</button><button data-a="merge" title="Unir com a próxima (Alt+U)" aria-label="Unir com a próxima">⤓</button><button data-a="del" class="del" title="Excluir" aria-label="Excluir">✕</button></div></div>`).join('');
+  cues.forEach((_, i) => meta(i)); summary(); markSel(); drawWave(); autosave();
 }
 $('cues').addEventListener('input', e => {
   const row = e.target.closest('.cue'); if (!row) return; const i = +row.dataset.i, x = cues[i];
+  if (pendingSnap) { pushHist(pendingSnap); pendingSnap = null; }
   if (e.target.tagName === 'TEXTAREA') x.text = e.target.value;
   else { const v = parseT(e.target.value); if (isNaN(v)) return; if (e.target.classList.contains('s')) x.start = v; else x.end = v; }
-  meta(i); summary();
+  meta(i); summary(); drawWave(); autosave();
 });
+let pendingSnap = null;
+$('cues').addEventListener('focusin', e => {
+  const row = e.target.closest('.cue'); if (!row) return; sel = +row.dataset.i; markSel(); drawWave();
+  if (/INPUT|TEXTAREA/.test(e.target.tagName)) pendingSnap = JSON.stringify(cues);
+});
+$('cues').addEventListener('focusout', () => { pendingSnap = null; });
 $('cues').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return; const i = +b.closest('.cue').dataset.i, c = cfg(), x = cues[i], a = b.dataset.a;
-  if (a === 'seek') { follow = true; $('player').currentTime = x.start; $('player').play(); return; }
-  if (a === 'del') cues.splice(i, 1);
+  sel = i;
+  if (a === 'seek') { follow = true; $('player').currentTime = x.start; $('player').play(); markSel(); return; }
+  if (a === 'merge' && !cues[i + 1]) return;
+  snap();
+  if (a === 'del') { cues.splice(i, 1); sel = Math.min(i, cues.length - 1); }
   if (a === 'merge' && cues[i + 1]) { x.text = breakLines(x.text + ' ' + cues[i + 1].text, c.maxc, c.maxl); x.end = cues[i + 1].end; cues.splice(i + 1, 1); }
   if (a === 'split') {
     const t = x.text; let p = t.indexOf('\n');
     if (p < 0) { const m = t.length >> 1, lo = t.lastIndexOf(' ', m), hi = t.indexOf(' ', m); p = lo < 0 ? hi : hi < 0 ? lo : (m - lo <= hi - m ? lo : hi); }
-    if (p < 0) return;
+    if (p < 0) { hist.pop(); updUndo(); return; }
     const t1 = t.slice(0, p).trim(), t2 = t.slice(p + 1).trim(), g = c.gap;
     const mid = x.start + (x.end - x.start) * t1.length / (t1.length + t2.length);
     cues.splice(i, 1, {start: x.start, end: mid - g / 2, text: breakLines(t1, c.maxc, c.maxl)}, {start: mid + g / 2, end: x.end, text: breakLines(t2, c.maxc, c.maxl)});
@@ -496,6 +565,7 @@ $('player').addEventListener('timeupdate', () => {
   const t = $('player').currentTime; let k = cues.findIndex(x => t >= x.start && t <= x.end);
   [...$('cues').children].forEach((r, i) => r.classList.toggle('now', i === k));
   if (k >= 0 && follow && !$('player').paused) $('cues').children[k].scrollIntoView({block: 'nearest'});
+  if ($('player').paused) drawWave();
 });
 // a lista acompanha o áudio só até você rolar a página; clicar em "Ouvir" volta a acompanhar
 let follow = true;
@@ -503,15 +573,23 @@ const stopFollow = () => { follow = false; };
 addEventListener('wheel', stopFollow, {passive: true}); addEventListener('touchmove', stopFollow, {passive: true});
 addEventListener('keydown', e => { if (['PageUp', 'PageDown', 'Home', 'End', 'ArrowUp', 'ArrowDown'].includes(e.key) && !/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) stopFollow(); });
 addEventListener('mousedown', e => { if (e.target === document.documentElement || e.clientX > document.documentElement.clientWidth) stopFollow(); });
-let undo = null;
-$('regen').onclick = () => {
-  if (!words.length) return;
-  if (cues.some(x => x.edited) && !confirm('Isso descarta suas edições. Continuar?')) return;
-  undo = JSON.parse(JSON.stringify(cues)); build();
-};
-$('apply').onclick = () => {   // re-segmenta o texto atual (com suas correções), refazendo divisões, quebras e tempos
+/* ---------- Desfazer (até 100 passos) ---------- */
+let hist = [];
+function pushHist(json) { hist.push(json); if (hist.length > 100) hist.shift(); updUndo(); }
+function snap() { pushHist(JSON.stringify(cues)); }
+function updUndo() { $('undo').disabled = !hist.length; }
+function doUndo() { if (!hist.length) return; cues = JSON.parse(hist.pop()); sel = Math.min(sel, cues.length - 1); updUndo(); render(); }
+/* ---------- Refazer legendas: um botão, com a pergunta "manter minhas edições?" ---------- */
+$('redoBtn').onclick = () => { if (!cues.length && !words.length) return; $('redo').showModal(); };
+$('redo').addEventListener('click', e => {
+  const b = e.target.closest('[data-r]'); if (e.target === $('redo')) { $('redo').close(); return; } if (!b) return;
+  $('redo').close();
+  if (b.dataset.r === 'keep') reapply();
+  else if (b.dataset.r === 'zero') { if (!words.length) return status('A transcrição original não está disponível.', 1); snap(); build(); }
+});
+function reapply() {   // re-segmenta o texto atual (com suas correções), refazendo divisões, quebras e tempos
   if (!cues.length) return;
-  undo = JSON.parse(JSON.stringify(cues));
+  snap();
   const c = cfg(), ws = [];
   cues.forEach(x => {
     const tk = x.text.replace(/\n/g, ' ').trim().split(/\s+/).filter(Boolean); if (!tk.length) return;
@@ -519,8 +597,170 @@ $('apply').onclick = () => {   // re-segmenta o texto atual (com suas correçõe
     tk.forEach(w => { const e = t + d * w.length / tot; ws.push({t: w, s: t, e}); t = e; });
   });
   cues = layout(fixDashes(ws), c); render();
-};
-$('undo').onclick = () => { if (undo) { cues = undo; undo = null; render(); } };
+}
+$('undo').onclick = doUndo;
+
+
+/* ---------- Legenda selecionada ---------- */
+let sel = -1;
+function curIdx() {   // legenda selecionada; se não houver, a que está tocando (ou a última antes do ponto atual)
+  if (sel >= 0 && sel < cues.length) return sel;
+  const t = $('player').currentTime; let k = -1; cues.forEach((x, i) => { if (x.start <= t) k = i; }); return k;
+}
+function markSel() { [...$('cues').children].forEach((r, i) => r.classList.toggle('sel', i === sel)); }
+function updRow(i) {   // atualiza tempos e avisos de uma legenda sem redesenhar a lista
+  const row = $('cues').children[i], x = cues[i]; if (!row || !x) return;
+  const s = row.querySelector('.s'), e = row.querySelector('.e');
+  if (s && document.activeElement !== s) s.value = ts(x.start, '.'); if (e && document.activeElement !== e) e.value = ts(x.end, '.');
+  meta(i); if (cues[i + 1]) meta(i + 1); summary(); drawWave(); autosave();
+}
+function focusRow(i) { const row = $('cues').children[i]; if (!row) return; sel = i; markSel(); row.scrollIntoView({block: 'nearest'}); drawWave(); }
+
+/* ---------- Atalhos de edição com o player (Alt = Option no Mac) ---------- */
+addEventListener('keydown', e => {
+  const tag = e.target.tagName, typing = /INPUT|TEXTAREA|SELECT/.test(tag);
+  if ((e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey && e.code === 'KeyZ' && !typing && hist.length) { e.preventDefault(); doUndo(); return; }
+  if (!e.altKey || e.ctrlKey || e.metaKey || !cues.length && !['KeyP', 'KeyJ', 'KeyL'].includes(e.code)) return;
+  const P = $('player'), t = P.currentTime, c = cfg(), i = curIdx(), x = cues[i];
+  const act = {
+    KeyP: () => { P.paused ? P.play() : P.pause(); },
+    KeyJ: () => { P.currentTime = Math.max(0, t - 2); },
+    KeyL: () => { P.currentTime = Math.min(P.duration || t + 2, t + 2); },
+    KeyR: () => { if (!x) return; follow = true; P.currentTime = x.start; P.play(); },
+    ArrowUp: () => { const k = Math.max(0, (i < 0 ? 0 : i) - 1); focusRow(k); P.currentTime = cues[k].start; },
+    ArrowDown: () => { const k = Math.min(cues.length - 1, i + 1); focusRow(k); P.currentTime = cues[k].start; },
+    KeyI: () => { if (!x) return; snap(); x.start = Math.round(t * 1000) / 1000; if (x.end <= x.start + .05) x.end = x.start + Math.max(.5, c.mind); updRow(i); },
+    KeyO: () => { if (!x) return; if (t <= x.start + .05) return status('O fim precisa ficar depois do início da legenda.', 1); snap(); x.end = Math.round(t * 1000) / 1000; updRow(i); },
+    KeyU: () => { if (!x || !cues[i + 1]) return; snap(); x.text = breakLines(x.text + ' ' + cues[i + 1].text, c.maxc, c.maxl); x.end = cues[i + 1].end; cues.splice(i + 1, 1); render(); focusRow(i); },
+    KeyS: () => {   // divide no tempo atual; o texto é dividido onde está o cursor (ou na proporção do tempo)
+      if (!x || t <= x.start + .1 || t >= x.end - .1) return status('Para dividir, posicione o áudio dentro da legenda selecionada.', 1);
+      const ta = e.target.closest && e.target.closest('.cue') && e.target.tagName === 'TEXTAREA' && +e.target.closest('.cue').dataset.i === i ? e.target : null;
+      const flat = x.text.replace(/\n/g, ' ');
+      let p = ta ? x.text.slice(0, ta.selectionStart).replace(/\n/g, ' ').length : -1;
+      if (p <= 0 || p >= flat.length) { const m = Math.round(flat.length * (t - x.start) / (x.end - x.start)), lo = flat.lastIndexOf(' ', m), hi = flat.indexOf(' ', m); p = lo < 0 ? hi : hi < 0 ? lo : (m - lo <= hi - m ? lo : hi); }
+      if (p <= 0) return;
+      const t1 = flat.slice(0, p).trim(), t2 = flat.slice(p).trim(); if (!t1 || !t2) return;
+      snap(); const g = c.gap;
+      cues.splice(i, 1, {start: x.start, end: Math.round((t - g / 2) * 1000) / 1000, text: breakLines(t1, c.maxc, c.maxl)}, {start: Math.round((t + g / 2) * 1000) / 1000, end: x.end, text: breakLines(t2, c.maxc, c.maxl)});
+      render(); focusRow(i + 1);
+    }
+  }[e.code];
+  if (!act) return;
+  e.preventDefault(); act();
+}, true);
+
+/* ---------- Onda sonora ---------- */
+const WV = {pk: null, rate: 200, span: 16, view0: 0, drag: null, max: 1};
+function makePeaks(a) {   // mínimo e máximo a cada 5 ms
+  const step = 16000 / WV.rate, n = Math.ceil(a.length / step), mn = new Float32Array(n), mx = new Float32Array(n); let top = 1e-4;
+  for (let i = 0; i < n; i++) {
+    let lo = 0, hi = 0; const s0 = Math.floor(i * step), s1 = Math.min(a.length, Math.floor((i + 1) * step));
+    for (let j = s0; j < s1; j++) { const v = a[j]; if (v < lo) lo = v; if (v > hi) hi = v; }
+    mn[i] = lo; mx[i] = hi; if (hi > top) top = hi; if (-lo > top) top = -lo;
+  }
+  return {mn, mx, n, top};
+}
+function prepWave(force) {
+  const f = file; if (!f) return;
+  if (!force && f.size > 500 * 1048576) { $('wavemsg').innerHTML = 'Arquivo grande: a onda sonora não é gerada automaticamente. <button id="mkwave">Gerar onda sonora</button>'; $('mkwave').onclick = () => prepWave(true); return; }
+  $('wavemsg').textContent = 'Gerando a onda sonora…';
+  audioOf(f).then(a => {
+    if (file !== f) return;
+    WV.pk = makePeaks(a); WV.view0 = 0; $('wavemsg').textContent = ''; $('wavewrap').hidden = false; drawWave();
+    if (a.length > 16000 * 3600 && !job) AUD = null;   // áudio de mais de 1 h: libera a memória (é decodificado de novo se precisar)
+  }).catch(() => { if (file === f) { $('wavemsg').textContent = 'Não foi possível gerar a onda sonora deste arquivo (formato incomum ou arquivo muito grande).'; if (AUD && AUD.f === f) AUD = null; } });
+}
+const cssv = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function drawWave() {
+  const cv = $('wave'); if (!WV.pk || $('wavewrap').hidden) return;
+  const dpr = devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight; if (!W) return;
+  if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+  const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+  const t = $('player').currentTime, span = WV.span, dur = WV.pk.n / WV.rate;
+  if (!WV.drag && (t < WV.view0 || t > WV.view0 + span * .85)) WV.view0 = Math.max(0, Math.min(dur - span, t - span * .25));
+  WV.view0 = Math.max(0, WV.view0);
+  const v0 = WV.view0, X = s => (s - v0) / span * W, ac = cssv('--ac'), tx = cssv('--tx'), mut = cssv('--mut');
+  // legendas
+  g.font = '11px system-ui,sans-serif'; g.textBaseline = 'top';
+  cues.forEach((c, i) => {
+    if (c.end < v0 || c.start > v0 + span) return;
+    const a = X(c.start), b = X(c.end), on = i === sel;
+    g.globalAlpha = on ? .28 : .14; g.fillStyle = ac; g.fillRect(a, 0, b - a, H);
+    g.globalAlpha = 1; g.fillStyle = ac; g.fillRect(a, 0, on ? 2 : 1, H); g.fillRect(b - (on ? 2 : 1), 0, on ? 2 : 1, H);
+    g.fillStyle = on ? tx : mut; g.fillText('#' + (i + 1), a + 4, 3);
+  });
+  // onda
+  const sc = (H / 2 - 4) / WV.pk.top, mid = H / 2; g.fillStyle = tx; g.globalAlpha = .55;
+  for (let px = 0; px < W; px++) {
+    const i0 = Math.floor((v0 + px / W * span) * WV.rate), i1 = Math.max(i0 + 1, Math.floor((v0 + (px + 1) / W * span) * WV.rate));
+    let lo = 0, hi = 0; for (let i = Math.max(0, i0); i < Math.min(WV.pk.n, i1); i++) { if (WV.pk.mn[i] < lo) lo = WV.pk.mn[i]; if (WV.pk.mx[i] > hi) hi = WV.pk.mx[i]; }
+    g.fillRect(px, mid - hi * sc, 1, Math.max(1, (hi - lo) * sc));
+  }
+  g.globalAlpha = 1;
+  // posição atual
+  const px = X(t); if (px >= 0 && px <= W) { g.fillStyle = cssv('--err'); g.fillRect(px - 1, 0, 2, H); }
+}
+function waveTime(ev) { const r = $('wave').getBoundingClientRect(); return WV.view0 + (ev.clientX - r.left) / r.width * WV.span; }
+function edgeAt(ev) {   // borda de legenda perto do ponteiro (até 6 px)
+  const r = $('wave').getBoundingClientRect(), x = ev.clientX - r.left, tol = 6 / r.width * WV.span, t = WV.view0 + x / r.width * WV.span;
+  let best = null, bd = tol;
+  cues.forEach((c, i) => { for (const k of ['start', 'end']) { const d = Math.abs(c[k] - t); if (d <= bd) { bd = d; best = {i, k}; } } });
+  return best;
+}
+$('wave').addEventListener('pointerdown', ev => {
+  if (!WV.pk) return; const ed = edgeAt(ev);
+  if (ed) { WV.drag = {...ed, snapped: false}; $('wave').setPointerCapture(ev.pointerId); sel = ed.i; markSel(); return; }
+  const t = Math.max(0, waveTime(ev)); $('player').currentTime = t;
+  const k = cues.findIndex(c => t >= c.start && t <= c.end); if (k >= 0) { follow = false; focusRow(k); }
+  drawWave();
+});
+$('wave').addEventListener('pointermove', ev => {
+  if (!WV.drag) { $('wave').style.cursor = edgeAt(ev) ? 'ew-resize' : 'crosshair'; return; }
+  const d = WV.drag, x = cues[d.i]; if (!x) return;
+  if (!d.snapped) { snap(); d.snapped = true; }
+  let t = Math.round(Math.max(0, waveTime(ev)) * 1000) / 1000;
+  if (d.k === 'start') t = Math.min(t, x.end - .05); else t = Math.max(t, x.start + .05);
+  x[d.k] = t; updRow(d.i);
+});
+const endDrag = () => { if (WV.drag) { WV.drag = null; drawWave(); } };
+$('wave').addEventListener('pointerup', endDrag); $('wave').addEventListener('pointercancel', endDrag);
+$('wave').addEventListener('wheel', ev => {
+  if (!WV.pk) return; ev.preventDefault();
+  const dur = WV.pk.n / WV.rate, d = (Math.abs(ev.deltaX) > Math.abs(ev.deltaY) ? ev.deltaX : ev.deltaY) / 400 * WV.span;
+  WV.view0 = Math.max(0, Math.min(dur - WV.span, WV.view0 + d)); WV.drag = {pan: true}; drawWave(); WV.drag = null;
+}, {passive: false});
+$('zoom').addEventListener('input', () => { WV.span = +$('zoom').value; $('zoomv').textContent = WV.span + ' s'; drawWave(); });
+addEventListener('resize', drawWave);
+(function loop() { if (!$('player').paused) drawWave(); requestAnimationFrame(loop); })();
+$('player').addEventListener('seeked', drawWave);
+
+/* ---------- Salvamento automático (no navegador) ---------- */
+let saveT = null;
+function autosave(now) {
+  clearTimeout(saveT);
+  const go = () => {
+    if (!words.length && !cues.length) return;
+    kv('set', 'sessao', {v: 1, at: Date.now(), fname: file ? file.name : (restored && restored.fname) || '', words, cues,
+      engine: $('engine').value, lang: $('lang').value, cfg: cfg()}).catch(() => {});
+  };
+  if (now) go(); else saveT = setTimeout(go, 700);
+}
+let restored = null;
+function hideSaved() { $('saved').hidden = true; }
+function offerSaved(d) {
+  if (!d || !(d.cues && d.cues.length)) return;
+  const when = new Date(d.at).toLocaleString('pt-BR', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'});
+  $('saved').innerHTML = `<span>Há uma transcrição salva${d.fname ? ` de <b>${esc(d.fname)}</b>` : ''} (${when}, ${d.cues.length} legendas).</span><button id="svOk">Restaurar</button><button id="svNo">Descartar</button>`;
+  $('saved').hidden = false;
+  $('svOk').onclick = () => {
+    restored = d; words = d.words || []; cues = d.cues; hist = []; updUndo();
+    if (d.cfg) for (const k in d.cfg) if ($(k)) $(k).value = d.cfg[k];
+    if (d.lang != null) $('lang').value = d.lang;
+    hideSaved(); render();
+    status(file && file.name === d.fname ? 'Transcrição restaurada.' : `Transcrição restaurada. Para ouvir e ver a onda sonora, carregue de novo o arquivo${d.fname ? ' ' + d.fname : ''}.`);
+  };
+  $('svNo').onclick = () => { if (!confirm('Apagar a transcrição salva? Isso não pode ser desfeito.')) return; kv('set', 'sessao', null).catch(() => {}); hideSaved(); };
+}
 
 /* ---------- Exportação ---------- */
 function exportAs(kind) {
@@ -549,8 +789,13 @@ async function pickM() { try { mdir = await showDirectoryPicker({id: 'modelos', 
 document.querySelectorAll('[data-x]').forEach(b => b.onclick = () => exportAs(b.dataset.x));
 
 /* ---------- Transcrição ---------- */
-// preços da OpenAI em US$ por minuto de áudio (conferidos em nov/2026)
-const PRICE = {whisper: .006, gpt: .0045, groq: .111 / 60, scribe: .20 / 60};   // US$ por minuto
+/* ===== Preços e datas de referência: tudo o que envelhece fica aqui ===== */
+const REF = {
+  data: 'novembro de 2026',                                              // quando os preços foram conferidos
+  preco: {whisper: .006, gpt: .0045, groq: .111 / 60, scribe: .20 / 60},   // US$ por minuto de áudio
+  whisper1: 'A OpenAI anunciou que ele será desligado em fev/2027.'
+};
+const PRICE = REF.preco;
 const PROV = {   // chave e textos de cada fornecedor
   openai: {name: 'Chave da API OpenAI', store: 'openaiKey', ph: 'sk-...', tip: 'Crie em platform.openai.com, em API keys. A chave é enviada apenas para a OpenAI e só fica guardada se você marcar "Lembrar". A cobrança é por minuto de áudio.\n\nArquivos acima de 24 MB são divididos automaticamente em partes de ~10 min, cortadas em silêncio.'},
   groq: {name: 'Chave da API Groq', store: 'groqKey', ph: 'gsk_...', tip: 'Crie em console.groq.com, em API Keys (tem plano grátis com limite por hora). A chave é enviada apenas para a Groq e só fica guardada se você marcar "Lembrar".\n\nArquivos acima de 24 MB são divididos automaticamente em partes de ~10 min, cortadas em silêncio.'},
@@ -564,10 +809,10 @@ function showCost() {
   const m = $('engine').value, el = $('cost');
   el.hidden = false;   // a linha do custo fica sempre lá, para a altura dos cartões não mudar
   if (m === 'local') { el.innerHTML = 'Custo: <b>grátis</b> (roda no seu computador)'; return; }
-  if (!durSec) { el.innerHTML = 'Custo estimado: <span style="color:var(--mut)">escolha um arquivo</span>'; return; }
+  if (!durSec) { el.innerHTML = `Custo estimado: <span style="color:var(--mut)">escolha um arquivo · preços de ${REF.data}</span>`; return; }
   const kt = m === 'scribe' && sTerms().length ? 1.2 : 1, min = durSec / 60, v = min * (m === 'groq' ? PRICE.groq : m === 'scribe' ? PRICE.scribe * kt : PRICE.whisper + (m === 'gpt' ? PRICE.gpt : 0));
   el.hidden = false;
-  el.innerHTML = `Custo estimado: <b>${usd(v)}</b> (${min < 1 ? Math.round(durSec) + ' s' : Math.round(min) + ' min'}) <span class="tip" tabindex="0" data-tip="Scribe v3: ${usd(PRICE.scribe)} por minuto, +20% se houver termos no contexto.&#10;Groq: ${usd(PRICE.groq)} por minuto (mínimo de 10 s por envio).&#10;whisper-1: ${usd(PRICE.whisper)} por minuto.&#10;gpt-transcribe + whisper-1: ${usd(PRICE.whisper + PRICE.gpt)} por minuto, porque o áudio é transcrito pelos dois.&#10;&#10;No modo gpt-transcribe o custo pode subir um pouco se alguma parte precisar ser reenviada. O valor real aparece no fim da transcrição. Preços de novembro de 2026.">?</span>`;
+  el.innerHTML = `Custo estimado: <b>${usd(v)}</b> (${min < 1 ? Math.round(durSec) + ' s' : Math.round(min) + ' min'}) · <span style="color:var(--mut)">preços de ${REF.data}</span> <span class="tip" tabindex="0" data-tip="Scribe v3: ${usd(PRICE.scribe)} por minuto, +20% se houver termos no contexto.&#10;Groq: ${usd(PRICE.groq)} por minuto (mínimo de 10 s por envio).&#10;whisper-1: ${usd(PRICE.whisper)} por minuto.&#10;gpt-transcribe + whisper-1: ${usd(PRICE.whisper + PRICE.gpt)} por minuto, porque o áudio é transcrito pelos dois.&#10;&#10;No modo gpt-transcribe o custo pode subir um pouco se alguma parte precisar ser reenviada. O valor real aparece no fim da transcrição. Preços de referência: ${REF.data}.">?</span>`;
 }
 const status = (t, err) => { $('st').textContent = t; $('st').className = err ? 'err' : ''; };
 const files = {};
@@ -579,29 +824,32 @@ function prog(p) {
     status(`Baixando modelo… ${(100 * l / t).toFixed(0)}% (${(t / 1048576).toFixed(0)} MB, só na primeira vez)`);
   } else if (p.status === 'ready') { $('bar').style.display = 'none'; status('Modelo carregado.'); }
 }
-async function decode(f) {
-  const t0 = Date.now(), iv = setInterval(() => status(`Decodificando áudio… ${Math.round((Date.now() - t0) / 1000)} s (arquivos longos podem levar alguns minutos)`), 500);
+async function decodeRaw(f) {
+  const ctx = new AudioContext({sampleRate: 16000});
   try {
-    const ctx = new AudioContext({sampleRate: 16000});
     const ab = await ctx.decodeAudioData(await f.arrayBuffer()), n = ab.length, out = new Float32Array(n);
     for (let c = 0; c < ab.numberOfChannels; c++) { const d = ab.getChannelData(c); for (let i = 0; i < n; i++) out[i] += d[i] / ab.numberOfChannels; }
-    ctx.close(); return out;
-  } catch (e) {
+    return out;
+  } finally { ctx.close(); }
+}
+/* o áudio do arquivo é decodificado uma vez só e serve para a transcrição e para a onda sonora */
+let AUD = null;   // {f, p}
+function audioOf(f) {
+  if (!AUD || AUD.f !== f) { AUD = {f, p: decodeRaw(f)}; AUD.p.catch(() => {}); }
+  return AUD.p;
+}
+async function decode(f) {
+  const t0 = Date.now(), iv = setInterval(() => status(`Decodificando áudio… ${Math.round((Date.now() - t0) / 1000)} s (arquivos longos podem levar alguns minutos)`), 500);
+  try { const a = await audioOf(f); checkCancel(); return a; }
+  catch (e) {
+    if (e.message === CANCEL) throw e;
+    if (AUD && AUD.f === f) AUD = null;
     throw new Error('O navegador não conseguiu abrir este arquivo (formato incomum ou vídeo muito grande). Use o motor ElevenLabs Scribe, que envia o arquivo inteiro sem precisar abri-lo, ou converta para MP3 (por exemplo no VLC: Mídia → Converter/Salvar) e carregue de novo.');
   } finally { clearInterval(iv); }
 }
 function punct(ws, text) {   // a API devolve palavras sem pontuação; o texto completo tem. Alinha um com o outro.
   const toks = (text || '').trim().split(/\s+/).filter(Boolean);
   return toks.length && ws.length ? align(toks, ws, true) : ws;
-}
-let mainPipe, mainKey;
-async function runMain(audio, o) {
-  const {pipeline, env} = await import(TJS), k = o.model + o.device + (o.dir ? o.dir.name : '');
-  if (k !== mainKey) {
-    env.useCustomCache = !!o.dir; env.useBrowserCache = !o.dir; if (o.dir) env.customCache = makeCache(o.dir);
-    mainPipe = await pipeline('automatic-speech-recognition', o.model, {device: o.device, dtype: o.dtype, progress_callback: prog}); mainKey = k;
-  }
-  return transcribeParts(mainPipe, audio, o.parts, o, partProg);
 }
 function partProg(i, n) { $('bar').style.display = 'block'; $('bar').value = 100 * i / n; status(`Transcrevendo parte ${i + 1} de ${n}…`); }
 function pausePoint(a, lo, hi, w = 4) {   // centro da janela mais silenciosa (w × 50 ms) entre lo e hi
@@ -645,8 +893,10 @@ function quietPoint(a, target, win) {   // ponto mais silencioso perto de "targe
 function runLocal(audio, o) {
   return new Promise((res, rej) => {
     if (!worker) worker = new Worker(URL.createObjectURL(new Blob([W], {type: 'text/javascript'})), {type: 'module'});
-    worker.onerror = e => { worker = null; rej(new Error('worker:' + (e.message || 'sem detalhes'))); };
+    worker.onerror = e => { e.preventDefault && e.preventDefault(); try { worker.terminate(); } catch (x) {} worker = null;
+      rej(new Error('Não consegui carregar o Whisper local (' + (e.message || 'biblioteca do jsDelivr indisponível') + '). Verifique a internet, VPN ou bloqueador de anúncios e tente de novo.')); };
     worker.onmessage = ({data: d}) => d.type === 'progress' ? prog(d.p) : d.type === 'part' ? partProg(d.i, d.n) : d.type === 'done' ? res(d.chunks) : rej(new Error(d.message));
+    if (job) job.stopLocal = () => { try { worker.terminate(); } catch (x) {} worker = null; rej(new Error(CANCEL)); };
     worker.postMessage({...o, audio});
   });
 }
@@ -662,9 +912,18 @@ function toWords(ch) {
   }
   return o;
 }
+/* ---------- Cancelamento ---------- */
+const CANCEL = '__cancelado__';
+let job = null;   // processamento em andamento: {ctrl, cancelled, stopLocal}
+const checkCancel = () => { if (job && (job.cancelled || job.ctrl.signal.aborted)) throw new Error(CANCEL); };
+const wait = ms => new Promise((res, rej) => {   // espera que pode ser interrompida pelo Cancelar
+  const sig = job && job.ctrl.signal; if (sig && sig.aborted) return rej(new Error(CANCEL));
+  const t = setTimeout(res, ms); if (sig) sig.addEventListener('abort', () => { clearTimeout(t); rej(new Error(CANCEL)); }, {once: true});
+});
 async function post(url, headers, body, who) {   // fetch com mensagem clara se o navegador bloquear
-  try { return await fetch(url, {method: 'POST', headers, body}); }
-  catch (e) { throw new Error(`Não consegui falar com a ${who} (${e.message}). Verifique a internet; se persistir, o navegador pode estar bloqueando chamadas diretas a esse serviço.`); }
+  checkCancel();
+  try { return await fetch(url, {method: 'POST', headers, body, signal: job ? job.ctrl.signal : undefined}); }
+  catch (e) { if (e.name === 'AbortError') throw new Error(CANCEL); throw new Error(`Não consegui falar com a ${who} (${e.message}). Verifique a internet; se persistir, o navegador pode estar bloqueando chamadas diretas a esse serviço.`); }
 }
 function sTerms() {   // termos do contexto para o "keyterms" do Scribe
   return $('ctx').value.split(/[,;\n]+/).map(t => t.replace(/[<>{}\[\]\\]/g, '').replace(/^(ex\.?|nomes?|termos?)\s*:\s*/i, '').trim())
@@ -693,7 +952,7 @@ async function scribeCall() {   // ElevenLabs Scribe v3: arquivo inteiro, tempo 
       }
       return out;
     }
-    if (tent < 2 && (r.status === 429 || r.status >= 500)) { await new Promise(z => setTimeout(z, 3000 * (tent + 1))); continue; }
+    if (tent < 2 && (r.status === 429 || r.status >= 500)) { await wait(3000 * (tent + 1)); continue; }
     const d = j.detail; throw new Error('ElevenLabs: ' + ((d && (d.message || (typeof d === 'string' ? d : JSON.stringify(d)))) || 'erro ' + r.status));
   }
 }
@@ -723,7 +982,7 @@ function groqWords(j, off) {   // Groq: as palavras vêm cortadas no 1º acento/
   return out;
 }
 async function apiCall(blob, name, off) {
-  const groq = $('engine').value === 'groq', gm = window.groqModel || 'whisper-large-v3';
+  const groq = $('engine').value === 'groq', gm = groqModel || 'whisper-large-v3';
   for (let tent = 0; ; tent++) {
     const fd = new FormData(); fd.append('file', blob, name); fd.append('model', groq ? gm : 'whisper-1');
     const PUN = {pt: 'Olá, tudo bem? Sim, vamos começar.', en: 'Hello, how are you? Yes, let\'s begin.', es: 'Hola, ¿qué tal? Sí, vamos a empezar.'};
@@ -742,7 +1001,7 @@ async function apiCall(blob, name, off) {
       return punct(ws, text);
     }
     if (r.ok) { spent.w += +j.duration || 0; return punct((j.words || []).map(w => ({t: w.word.trim(), s: w.start + off, e: w.end + off})).filter(w => w.t), j.text); }
-    if (tent < 2 && (r.status === 429 || r.status >= 500)) { await new Promise(z => setTimeout(z, 3000 * (tent + 1))); continue; }
+    if (tent < 2 && (r.status === 429 || r.status >= 500)) { await wait(3000 * (tent + 1)); continue; }
     throw new Error(j.error?.message || 'Erro da API (' + r.status + ')');
   }
 }
@@ -752,12 +1011,12 @@ async function gptCall(blob, name, noCtx, noChunk) {   // texto do gpt-transcrib
     const fd = new FormData(); fd.append('file', blob, name); fd.append('model', 'gpt-transcribe');
     if (!noCtx && $('ctx').value.trim()) fd.append('prompt', $('ctx').value.trim());
     if (!gptNoChunk && !noChunk) fd.append('chunking_strategy', 'auto');
-    const r = await fetch('https://api.openai.com/v1/audio/transcriptions', {method: 'POST', headers: {Authorization: 'Bearer ' + $('key').value.trim()}, body: fd});
+    const r = await post('https://api.openai.com/v1/audio/transcriptions', {Authorization: 'Bearer ' + $('key').value.trim()}, fd, 'OpenAI');
     const j = await r.json().catch(() => ({}));
-    if (r.ok) { spent.g += +(j.usage?.seconds) || 0; if (!(j.text || '').trim()) { (window.gptRaw = window.gptRaw || []).push(name + ': ' + JSON.stringify(j).slice(0, 300)); console.warn('[legendas] gpt-transcribe vazio', name, j); } return j.text || ''; }
+    if (r.ok) { spent.g += +(j.usage?.seconds) || 0; return j.text || ''; }
     const msg = j.error?.message || 'Erro da API (' + r.status + ')';
     if (r.status === 400 && /chunking/i.test(msg) && !gptNoChunk) { gptNoChunk = true; continue; }
-    if (tent < 2 && (r.status === 429 || r.status >= 500)) { await new Promise(z => setTimeout(z, 3000 * (tent + 1))); continue; }
+    if (tent < 2 && (r.status === 429 || r.status >= 500)) { await wait(3000 * (tent + 1)); continue; }
     throw new Error('gpt-transcribe: ' + msg);
   }
 }
@@ -831,7 +1090,7 @@ function align(gt, ww, keep) {   // keep: o texto (gt) é da mesma transcrição
   }
   return out;
 }
-let groqFixed = 0;
+let groqFixed = 0, groqModel = null;
 async function groqRetry(words, audio) {   // reenvia sozinhos os trechos que a Groq devolveu quebrados, com um pouco de folga
   groqFixed = 0; if (!groqBad.length) return words;
   const bad = groqBad.slice(); groqBad = [];
@@ -843,8 +1102,9 @@ async function groqRetry(words, audio) {   // reenvia sozinhos os trechos que a 
     let fresh = null;
     for (const model of ['whisper-large-v3', 'whisper-large-v3-turbo']) {   // se o large-v3 errar de novo, tenta o turbo da Groq
       let f;
-      try { groqBad = []; window.groqModel = model; f = await apiCall(wav(audio.subarray(Math.floor(a * sr), Math.floor(b * sr))), `trecho${i + 1}.wav`, a); }
-      catch (e) { f = null; } finally { window.groqModel = null; }
+      checkCancel();
+      try { groqBad = []; groqModel = model; f = await apiCall(wav(audio.subarray(Math.floor(a * sr), Math.floor(b * sr))), `trecho${i + 1}.wav`, a); }
+      catch (e) { if (e.message === CANCEL) throw e; f = null; } finally { groqModel = null; }
       const still = groqBad.length; groqBad = [];
       if (f && f.length && !still) { fresh = f; break; }
     }
@@ -867,7 +1127,9 @@ async function cloud(mode) {
     for (let a = 0; a < audio.length;) { const w = Math.min(20, sec / 6) * sr, b = a + L * 1.25 < audio.length ? pausePoint(audio, a + L - w, a + L + w, 8) : audio.length; ps.push([a, b]); a = b; }
     return ps;
   };
-  const small = file.size <= 24 * 1048576;
+  // formatos aceitos direto pela OpenAI e pela Groq; os outros (MKV, AVI, MOV…) são convertidos aqui e enviados como WAV
+  const okFmt = /\.(flac|mp3|mp4|mpeg|mpga|m4a|ogg|oga|opus|wav|webm)$/i.test(file.name);
+  const small = file.size <= 24 * 1048576 && okFmt;
   if (mode === 'groq') groqBad = [];
   if (mode !== 'gpt' && small) { status('Enviando para a API…'); const w = await apiCall(file, file.name, 0); return mode === 'groq' ? groqRetry(w) : w; }
   const audio = await decode(file);
@@ -876,15 +1138,16 @@ async function cloud(mode) {
   const whisperJob = (async () => {
     if (small) return apiCall(file, file.name, 0);
     let all = [];
-    for (let i = 0; i < wparts.length; i++) all = all.concat(await apiCall(wav(audio.subarray(...wparts[i])), `parte${i + 1}.wav`, wparts[i][0] / sr));
+    for (let i = 0; i < wparts.length; i++) { checkCancel(); all = all.concat(await apiCall(wav(audio.subarray(...wparts[i])), `parte${i + 1}.wav`, wparts[i][0] / sr)); }
     return all;
   })();
   if (mode !== 'gpt') { status(`Enviando ${wparts.length} partes para a API…`); const w = await whisperJob; return mode === 'groq' ? groqRetry(w, audio) : w; }
+  let whErr = null;
+  whisperJob.catch(e => { if (e.message !== CANCEL) { whErr = e; if (job) job.ctrl.abort(); } });
   // gpt-transcribe: partes de ~2 min, porque em áudios longos ele costuma parar antes do fim ou pular trechos
   const gparts = cut(audio, 120), texts = new Array(gparts.length); let done = 0;
   const nw = s => (s || '').trim().split(/\s+/).filter(Boolean).length;
   status(`Transcrevendo com gpt-transcribe: 0 de ${gparts.length} partes…`);
-  window.gptRaw = [];
   const tryPart = async (a, b, base) => {
     const name = base + '.wav';   // tenta: normal → sem VAD do servidor → sem contexto → em pedaços menores
     const blob = wav(audio.subarray(a, b)), sec = (b - a) / sr, ok = t => nw(t) >= sec * .5;
@@ -895,25 +1158,27 @@ async function cloud(mode) {
     const q = Math.min(10, sec / 6) * sr, m = pausePoint(audio, ((a + b) >> 1) - q, ((a + b) >> 1) + q, 8);
     return (await tryPart(a, m, base + 'a')) + ' ' + (await tryPart(m, b, base + 'b'));
   };
-  for (let i = 0; i < gparts.length; i++) {   // uma parte por vez
-    texts[i] = await tryPart(gparts[i][0], gparts[i][1], `trecho${i + 1}`);
-    status(`Transcrevendo com gpt-transcribe: ${++done} de ${gparts.length} partes…`);
-  }
-  const ww = await whisperJob, out = [], diag = [];
-  gparts.forEach(([a, b], i) => {   // alinha cada parte só com as palavras do whisper-1 do mesmo trecho
-    const t0 = a / sr, t1 = b / sr, wp = ww.filter(w => (w.s + w.e) / 2 >= t0 && (w.s + w.e) / 2 < t1);
-    const toks = (texts[i] || '').trim().split(/\s+/).filter(Boolean);
-    diag.push(`parte ${i + 1}: gpt ${toks.length} / whisper ${wp.length} palavras`);
-  });
+  try {
+    for (let i = 0; i < gparts.length; i++) {   // uma parte por vez
+      checkCancel();
+      texts[i] = await tryPart(gparts[i][0], gparts[i][1], `trecho${i + 1}`);
+      status(`Transcrevendo com gpt-transcribe: ${++done} de ${gparts.length} partes…`);
+    }
+  } catch (e) { if (whErr) throw whErr; throw e; }
+  const ww = await whisperJob; if (whErr) throw whErr;
   const all = texts.join(' ').trim().split(/\s+/).filter(Boolean);
-  out.push(...(all.length ? align(all, ww) : ww));   // alinhamento único: palavras que mudaram de parte na emenda continuam no lugar certo
-  console.log('[legendas] ' + diag.join(' · '));
-  window.gptDiag = diag.join('\n') + (window.gptRaw.length ? '\nrespostas vazias: ' + window.gptRaw.slice(0, 3).join(' | ') : '');
-  return out;
+  return all.length ? align(all, ww) : ww;   // alinhamento único: palavras que mudaram de parte na emenda continuam no lugar certo
 }
+$('cancel').onclick = () => {
+  if (!job) return; job.cancelled = true; job.ctrl.abort(); if (job.stopLocal) job.stopLocal();
+  $('cancel').disabled = true; status('Cancelando…');
+};
 $('go').onclick = async () => {
   if (!file) return status('Escolha um arquivo primeiro.', 1);
-  $('go').disabled = true; $('bar').style.display = 'none'; spent = {w: 0, g: 0, q: 0, s: 0}; window.gptDiag = '';
+  $('go').disabled = true; $('bar').style.display = 'none'; spent = {w: 0, g: 0, q: 0, s: 0};
+  job = {ctrl: new AbortController(), cancelled: false, stopLocal: null};
+  $('cancel').hidden = false; $('cancel').disabled = false;
+  const paidNow = () => spent.w / 60 * PRICE.whisper + spent.g / 60 * PRICE.gpt + spent.q / 60 * PRICE.groq + spent.s / 60 * PRICE.scribe;
   try {
     if ($('engine').value !== 'local') words = await cloud($('engine').value);
     else {
@@ -926,23 +1191,21 @@ $('go').onclick = async () => {
       const turbo = opt.value.includes('turbo');
       const dtype = gpu ? {encoder_model: turbo ? 'fp16' : 'fp32', decoder_model_merged: 'q4'} : 'q8';
       const o = {model: opt.value, device: gpu ? 'webgpu' : 'wasm', dtype, language: $('lang').value, word: opt.dataset.word === '1', parts: plan(audio), dir: mdirOk};
-      status('Carregando biblioteca do Whisper…');
-      try { await import(TJS); } catch (e) { throw new Error('Não consegui baixar a biblioteca do jsDelivr (' + (e.message || e) + '). Verifique a internet, VPN ou bloqueador de anúncios e tente de novo.'); }
-      let chunks;
-      try { chunks = await runLocal(audio, o); }
-      catch (e) {
-        if (!e.message.startsWith('worker:')) throw e;
-        status('Worker indisponível (' + e.message.slice(7) + '). Rodando na página principal; ela pode ficar sem responder.');
-        chunks = await runMain(audio, o);
-      }
+      status('Carregando o Whisper local…');
+      const chunks = await runLocal(audio, o);
       words = toWords(chunks);
     }
     if (!words.length) throw new Error('Nenhuma fala detectada.');
+    checkCancel();
     words = fixDashes(sanitize(words)); const dp = dedupe(words); words = dp.ws;
-    const paid = spent.w / 60 * PRICE.whisper + spent.g / 60 * PRICE.gpt + spent.q / 60 * PRICE.groq + spent.s / 60 * PRICE.scribe;
-    build(); status(`Pronto: ${cues.length} legendas.` + (paid ? ` Custo desta transcrição: ${usd(paid)}.` : '') + ($('engine').value === 'groq' && groqFixed ? ` ${groqFixed} trecho(s) refeito(s) por virem quebrados da Groq.` : '') + (dp.removed ? ` ${dp.removed} palavras repetidas foram removidas.` : '')); $('bar').style.display = 'none';
-  } catch (e) { status('Erro: ' + e.message, 1); }
-  $('go').disabled = false;
+    const paid = paidNow();
+    hist = []; build(); hideSaved(); autosave(true); status(`Pronto: ${cues.length} legendas.` + (paid ? ` Custo desta transcrição: ${usd(paid)}.` : '') + ($('engine').value === 'groq' && groqFixed ? ` ${groqFixed} trecho(s) refeito(s) por virem quebrados da Groq.` : '') + (dp.removed ? ` ${dp.removed} palavras repetidas foram removidas.` : '')); $('bar').style.display = 'none';
+  } catch (e) {
+    $('bar').style.display = 'none';
+    if (e.message === CANCEL || (job && job.cancelled)) { const pd = paidNow(); status('Cancelado.' + (pd ? ` Já cobrado até aqui: ${usd(pd)}.` : ''), 1); }
+    else status('Erro: ' + e.message, 1);
+  }
+  job = null; $('cancel').hidden = true; $('go').disabled = false;
 };
 
 /* ---------- Interface ---------- */
@@ -978,9 +1241,12 @@ $('ctx').addEventListener('input', showCost);
   document.addEventListener('focusout', hide);
   addEventListener('scroll', hide, true);
 })();
+let playerURL = null;
 function useFile(f) {
   if (!f) return; file = f;
-  $('player').src = URL.createObjectURL(file);
+  if (playerURL) URL.revokeObjectURL(playerURL);
+  playerURL = URL.createObjectURL(file); $('player').src = playerURL;
+  AUD = null; WV.pk = null; $('wavewrap').hidden = true; prepWave();
   $('finfo').textContent = `${file.name} · ${(file.size / 1048576).toFixed(1)} MB`; $('finfo').classList.add('loaded');
 }
 $('file').onchange = e => useFile(e.target.files[0]);
@@ -997,6 +1263,7 @@ $('engine').onchange = () => {
   $('evBox').hidden = v !== 'scribe';
   if (v !== 'local') useProv(provOf(v));
 };
+$('engineTip').dataset.tip = $('engineTip').dataset.tip.replace('{W1FIM}', REF.whisper1);
 $('engine').onchange();
 $('cues').addEventListener('input', e => { const x = cues[+e.target.closest('.cue')?.dataset.i]; if (x) x.edited = true; });
 if (window.showDirectoryPicker) {
@@ -1005,6 +1272,7 @@ if (window.showDirectoryPicker) {
 } else $('mrow').hidden = true;
 if (navigator.gpu) $('gpuinfo').textContent = 'WebGPU disponível neste navegador.';
 else { $('model').selectedIndex = 1; $('gpuinfo').textContent = 'Sem WebGPU: usa a CPU (mais lento) e o Turbo fica indisponível.'; }
+kv('get', 'sessao').then(offerSaved).catch(() => {});   // transcrição salva automaticamente na última sessão
 </script>
 </body>
 </html>
